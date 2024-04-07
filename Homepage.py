@@ -118,24 +118,24 @@ def fragment():
             st.header(':neutral_face: You are not eligible to purchase a resale HDB')
 
 
-    elif st.session_state.fragment_runs == 1:
-        # User inputs for filtering
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    # elif st.session_state.fragment_runs == 1:
+    #     # User inputs for filtering
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
 
-        # Price
-        st.subheader('a. Price')
-        price_range = st.selectbox('Please select your price range', ('0 to 400 Thousand', '400 Thousand to 1 Million', 'More than 1 Million'), 
-                                key = 'price', index=None, placeholder="Please Select a Value")
-        price_rating = st.selectbox('I am willing to pay whatever it takes to obtain the best possible flat. (1 - Not Willing, 10 - Willing)', 
-                                    (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 1/13')
+    #     # Price
+    #     st.subheader('a. Price')
+    #     price_range = st.selectbox('Please select your price range', ('0 to 400 Thousand', '400 Thousand to 1 Million', 'More than 1 Million'), 
+    #                             key = 'price', index=None, placeholder="Please Select a Value")
+    #     price_rating = st.selectbox('I am willing to pay whatever it takes to obtain the best possible flat. (1 - Not Willing, 10 - Willing)', 
+    #                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 1/13')
 
-        if price_range != None and price_rating != None:
-            ratings['Price_Range'].append(price_range)
-            ratings['Price_Rating'].append(price_rating)
+    #     if price_range != None and price_rating != None:
+    #         ratings['Price_Range'].append(price_range)
+    #         ratings['Price_Rating'].append(price_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
     # elif st.session_state.fragment_runs == 2:
     #     # Size
@@ -456,14 +456,14 @@ def fragment():
         # ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
         # ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
         # ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
-        # ratings['MRT_Proximity'] = ratings.MRT_Range.apply(prox)
-        # ratings['Bus_Proximity'] = ratings.Bus_Range.apply(prox)
-        ratings['Park_Proximity'].append(prox(ratings['Park_Range'][0]))
-        ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'][0]))
-        ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'][0]))
-        ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'][0]))
-        ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'][0]))
-        # ratings['Park_Proximity'].append(1000000)
+        # # ratings['MRT_Proximity'] = ratings.MRT_Range.apply(prox)
+        # # ratings['Bus_Proximity'] = ratings.Bus_Range.apply(prox)
+        # ratings['Park_Proximity'].append(prox(ratings['Park_Range'][0]))
+        # ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'][0]))
+        # ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'][0]))
+        # ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'][0]))
+        # ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'][0]))
+        # # ratings['Park_Proximity'].append(1000000)
         # ratings['Mall_Proximity'].append(1000000)
         # ratings['Primary_School_Proximity'].append(1000000)
         # ratings['MRT_Proximity'].append(1000000)
