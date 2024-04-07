@@ -341,8 +341,8 @@ def fragment():
         st.write('')
 
         if bus_range != None and bus_rating != None:
-            ratings['MRT_Range'].append(mrt_range)
-            ratings['MRT_Rating'].append(mrt_rating)
+            ratings['Bus_Range'].append(bus_range)
+            ratings['Bus_Rating'].append(bus_rating)
 
             st.session_state.fragment_runs += 1
             st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
