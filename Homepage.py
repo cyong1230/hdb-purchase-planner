@@ -276,8 +276,8 @@ def fragment():
     else:
         st.title('Your personalized HDB Recommendation')
 
-        ratings = pd.read_csv("https://github.com/cyong1230/hdb-purchase-planner/blob/master/ratings.csv?raw=true")
-        hdb = pd.read_csv("https://github.com/cyong1230/hdb-purchase-planner/blob/master/hdb.csv?raw=true")
+        ratings = pd.read_csv("ratings.csv")
+        hdb = pd.read_csv("hdb.csv")
         del hdb['Unnamed: 0']
 
 
