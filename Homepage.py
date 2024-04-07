@@ -115,11 +115,8 @@ def fragment():
 
 
     elif st.session_state.fragment_runs == 1:
-        # ratings = pd.read_csv("ratings.csv")
-
-        # st.write(ratings.head(5))
-        # cpf = ratings['CPF'][0]
-        # cash = ratings['Cash'][0]
+        cpf = ratings['CPF'][0]
+        cash = ratings['Cash'][0]
 
         # User inputs for filtering
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
