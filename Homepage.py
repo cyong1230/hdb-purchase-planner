@@ -465,7 +465,7 @@ def fragment():
         # ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'][0]))
         # ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'][0]))
 
-        # ratings['Park_Proximity'].append(1000000)
+        ratings['Park_Proximity'].append(1000000)
         ratings['Mall_Proximity'].append(1000000)
         ratings['Primary_School_Proximity'].append(1000000)
         ratings['MRT_Proximity'].append(1000000)
