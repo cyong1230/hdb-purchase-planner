@@ -105,7 +105,7 @@ def fragment():
             ratings['Grant_Amount'].append(grant_amount)
 
             # ratings = pd.DataFrame(ratings)
-            # st.write(ratings) # For printing table (Remove for launch)
+            st.write(ratings) # For printing table (Remove for launch)
             # ratings.to_csv('ratings.csv')
 
             st.session_state.fragment_runs += 1
