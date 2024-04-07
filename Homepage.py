@@ -7,7 +7,7 @@ st.set_page_config(
     layout = 'wide',
     )
 
-st.sidebar()
+# st.sidebar()
 
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
@@ -491,7 +491,7 @@ def fragment():
         # with st.expander("Choose columns"):
         #     town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=None)
 
-        town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
+        town_filter = st.sidebar.multiselect('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
         flat_type_filter = st.multiselect('Select Flat Type', options=list(hdb2['flat_type'].unique()), default=list(hdb2['flat_type'].unique()))
 
         # with st.sidebar:
