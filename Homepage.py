@@ -21,7 +21,7 @@ ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [],
 def fragment():
     submit  = 0
     global ratings
-    
+
     if st.session_state.fragment_runs == 0:
         ######################################################## User Input Form ########################################################
         st.title('Singapore Property Purchase Planner')
@@ -107,10 +107,6 @@ def fragment():
             ratings['Grant_Indicator'].append(grant_indicator)
             ratings['Grant_Amount'].append(grant_amount)
 
-            # ratings = pd.DataFrame(ratings)
-            st.write(ratings) # For printing table (Remove for launch)
-            # ratings.to_csv('ratings.csv')
-
             st.session_state.fragment_runs += 1
             st.button("Next")
         elif grant_indicator == 'Nil':
@@ -118,9 +114,6 @@ def fragment():
 
 
     elif st.session_state.fragment_runs == 1:
-        cpf = ratings['CPF'][0]
-        cash = ratings['Cash'][0]
-
         # User inputs for filtering
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
 
@@ -132,7 +125,13 @@ def fragment():
                                     (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        if price_range != None:
+            st.session_state.fragment_runs += 1
+            st.button("Next")
+
+    elif st.session_state.fragment_runs == 2:
         # Size
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('b. Size')
         size_range = st.selectbox('Please select your preferred size (sqm)', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
                                 key = 'size', index=None, placeholder="Please Select a Value")
@@ -140,7 +139,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'size1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 3:
+
         # Cost per sqm
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('c. Cost per sqm')
         costsqm_range = st.selectbox('Please select your preferred cost per sqm', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
                                 key = 'costsqm', index=None, placeholder="Please Select a Value")
@@ -148,15 +153,27 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'costsqm1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 4:
+
         # Investment
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('d. Investment')
         investment_range = st.selectbox('Please select your preferred investment', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
                                 key = 'invest', index=None, placeholder="Please Select a Value")
         investment_rating = st.selectbox('I view housing as an investment, and I expect high returns in the next 5 years. (1 - Investment does not matter, 10 - Investment matters)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'invest1', index=None, placeholder="Please Select a Rating")
         st.write('')
+    
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 5:
 
         # Floor
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('e. Floor')
         floor_range = st.selectbox('Please select your preferred floor level', ('Low', 'Mid', 'High'), 
                                 key = 'floor', index=None, placeholder="Please Select a Value")
@@ -164,7 +181,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'floor1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 6:
+
         # Lease
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('f. Lease')
         lease_range = st.selectbox('Please select your preferred amount of remaining lease', ('0 to 50 Years Left', '50 to 80 Years Left', 'More than 80 Years Left'), 
                                 key = 'lease', index=None, placeholder="Please Select a Value")
@@ -172,7 +195,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'lease1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 7:
+
         # Age
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('g. Population of Residents')
         age_range = st.selectbox('Please select the average age range of the residents residing in the HDB flat', ('Young', 'Mid-Age', 'Elderly'), 
                                 key = 'age', index=None, placeholder="Please Select a Value")
@@ -180,7 +209,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'age1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 8:
+
         # Income
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('h. Household Income of Residents')
         income_range = st.selectbox('Please select the average income level of the residents residing in the HDB flat', ('Low', 'Mid', 'High'), 
                                 key = 'income', index=None, placeholder="Please Select a Value")
@@ -188,7 +223,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'income1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 9:
+
         # Park
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('i. Proximity to Parks')
         park_range = st.selectbox('Please select your preferred proximity to parks', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
                                 key = 'park', index=None, placeholder="Please Select a Value")
@@ -196,7 +237,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'park1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 10:
+
         # Mall
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('j. Proximity to Malls')
         mall_range = st.selectbox('Please select your preferred proximity to malls', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
                                 key = 'mall', index=None, placeholder="Please Select a Value")
@@ -204,7 +251,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mall1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 11:
+
         # Pri Sch
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('k. Proximity to Primary Schools')
         prisch_range = st.selectbox('Please select your preferred proximity to primary schools', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
                                 key = 'prisch', index=None, placeholder="Please Select a Value")
@@ -212,7 +265,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'prisch1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 12:
+
         # MRT
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('l. Proximity to an MRT Station')
         mrt_range = st.selectbox('Please select your preferred proximity to an MRT station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
                                 key = 'mrt', index=None, placeholder="Please Select a Value")
@@ -220,7 +279,13 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mrt1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
+        st.session_state.fragment_runs += 1
+        st.button("Next")
+
+    elif st.session_state.fragment_runs == 13:
+
         # Bus
+        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('m. Proximity to a Bus Station')
         bus_range = st.selectbox('Please select your preferred proximity to a bus station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
                                 key = 'bus', index=None, placeholder="Please Select a Value")
@@ -228,62 +293,47 @@ def fragment():
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'bus1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
-        variables = [cpf, cash, 
-                    price_range, size_range, costsqm_range, investment_range, floor_range, lease_range, age_range, 
-                    price_rating, size_rating, costsqm_rating, investment_rating, floor_rating, lease_rating, age_rating, 
-                    income_range, park_range, mall_range, prisch_range, mrt_range, bus_range, 
-                    income_rating, park_rating, mall_rating, prisch_rating, mrt_rating, bus_rating]
-
         if st.button('Submit'):
-            # for i in variables:
-            #     if i == None:
-            #         st.error('Please complete all required fields', icon="🚨")
-            #         break
-            #     else:
-            #         submit = 1
-            submit = 1
+            ratings['CPF'].append(cpf)
+            ratings['Cash'].append(cash)
+            ratings['Grant_Indicator'].append(grant_indicator)
+            ratings['Grant_Amount'].append(grant_amount)
 
-            if submit == 1:
-                ratings['CPF'].append(cpf)
-                ratings['Cash'].append(cash)
-                ratings['Grant_Indicator'].append(grant_indicator)
-                ratings['Grant_Amount'].append(grant_amount)
+            ratings['Price_Range'].append(price_range)
+            ratings['Size_Range'].append(size_range)
+            ratings['Costsqm_Range'].append(costsqm_range)
+            ratings['Investment_Range'].append(investment_range)
+            ratings['Floor_Range'].append(floor_range)
+            ratings['Lease_Range'].append(lease_range)
+            ratings['Age_Range'].append(age_range)
+            ratings['Income_Range'].append(income_range)
+            ratings['Park_Range'].append(park_range)
+            ratings['Mall_Range'].append(mall_range)
+            ratings['Prisch_Range'].append(prisch_range)
+            ratings['MRT_Range'].append(mrt_range)
+            ratings['Bus_Range'].append(bus_range)
 
-                ratings['Price_Range'].append(price_range)
-                ratings['Size_Range'].append(size_range)
-                ratings['Costsqm_Range'].append(costsqm_range)
-                ratings['Investment_Range'].append(investment_range)
-                ratings['Floor_Range'].append(floor_range)
-                ratings['Lease_Range'].append(lease_range)
-                ratings['Age_Range'].append(age_range)
-                ratings['Income_Range'].append(income_range)
-                ratings['Park_Range'].append(park_range)
-                ratings['Mall_Range'].append(mall_range)
-                ratings['Prisch_Range'].append(prisch_range)
-                ratings['MRT_Range'].append(mrt_range)
-                ratings['Bus_Range'].append(bus_range)
+            ratings['Price_Rating'].append(price_rating)
+            ratings['Size_Rating'].append(size_rating)
+            ratings['Costsqm_Rating'].append(costsqm_rating)
+            ratings['Investment_Rating'].append(investment_rating)
+            ratings['Floor_Rating'].append(floor_rating)
+            ratings['Lease_Rating'].append(lease_rating)
+            ratings['Age_Rating'].append(age_rating)
+            ratings['Income_Rating'].append(income_rating)
+            ratings['Park_Rating'].append(park_rating)
+            ratings['Mall_Rating'].append(mall_rating)
+            ratings['Prisch_Rating'].append(prisch_rating)
+            ratings['MRT_Rating'].append(mrt_rating)
+            ratings['Bus_Rating'].append(bus_rating)
 
-                ratings['Price_Rating'].append(price_rating)
-                ratings['Size_Rating'].append(size_rating)
-                ratings['Costsqm_Rating'].append(costsqm_rating)
-                ratings['Investment_Rating'].append(investment_rating)
-                ratings['Floor_Rating'].append(floor_rating)
-                ratings['Lease_Rating'].append(lease_rating)
-                ratings['Age_Rating'].append(age_rating)
-                ratings['Income_Rating'].append(income_rating)
-                ratings['Park_Rating'].append(park_rating)
-                ratings['Mall_Rating'].append(mall_rating)
-                ratings['Prisch_Rating'].append(prisch_rating)
-                ratings['MRT_Rating'].append(mrt_rating)
-                ratings['Bus_Rating'].append(bus_rating)
+            ratings = pd.DataFrame(ratings)
+            # st.write(ratings) # For printing table (Remove for launch)
+            ratings.to_csv('ratings.csv')
 
-                ratings = pd.DataFrame(ratings)
-                # st.write(ratings) # For printing table (Remove for launch)
-                ratings.to_csv('ratings.csv')
-
-                st.session_state.fragment_runs += 1
-                st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
-                st.button("My Personalized HDB Recommendation")
+            st.session_state.fragment_runs += 1
+            st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
+            st.button("My Personalized HDB Recommendation")
 
     else:
         st.title('Your personalized HDB Recommendation')
