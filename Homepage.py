@@ -7,6 +7,8 @@ st.set_page_config(
     layout = 'wide',
     )
 
+st.sidebar()
+
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
