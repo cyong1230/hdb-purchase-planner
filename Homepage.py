@@ -137,221 +137,221 @@ def fragment():
             st.session_state.fragment_runs += 1
             st.button("Next")
 
-    elif st.session_state.fragment_runs == 2:
-        # Size
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('b. Size')
-        size_range = st.selectbox('Please select your preferred size (sqm)', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
-                                key = 'size', index=None, placeholder="Please Select a Value")
-        size_rating = st.selectbox('I prefer to live in a big HDB flat. (1 - Smallest, 10 - Biggest)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'size1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 2/13')
+    # elif st.session_state.fragment_runs == 2:
+    #     # Size
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('b. Size')
+    #     size_range = st.selectbox('Please select your preferred size (sqm)', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
+    #                             key = 'size', index=None, placeholder="Please Select a Value")
+    #     size_rating = st.selectbox('I prefer to live in a big HDB flat. (1 - Smallest, 10 - Biggest)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'size1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 2/13')
 
-        if size_range != None and size_rating != None:
-            ratings['Size_Range'].append(size_range)
-            ratings['Size_Rating'].append(size_rating)
+    #     if size_range != None and size_rating != None:
+    #         ratings['Size_Range'].append(size_range)
+    #         ratings['Size_Rating'].append(size_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 3:
+    # elif st.session_state.fragment_runs == 3:
 
-        # Cost per sqm
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('c. Cost per sqm')
-        costsqm_range = st.selectbox('Please select your preferred cost per sqm', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
-                                key = 'costsqm', index=None, placeholder="Please Select a Value")
-        costsqm_rating = st.selectbox('I prefer the price of HDB flats to scale with its size. (1 - High price per sqm, 10 - Low price per sqm)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'costsqm1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 3/13')
+    #     # Cost per sqm
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('c. Cost per sqm')
+    #     costsqm_range = st.selectbox('Please select your preferred cost per sqm', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
+    #                             key = 'costsqm', index=None, placeholder="Please Select a Value")
+    #     costsqm_rating = st.selectbox('I prefer the price of HDB flats to scale with its size. (1 - High price per sqm, 10 - Low price per sqm)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'costsqm1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 3/13')
 
-        if costsqm_range != None and costsqm_rating != None:
-            ratings['Costsqm_Range'].append(costsqm_range)
-            ratings['Costsqm_Rating'].append(costsqm_rating)
+    #     if costsqm_range != None and costsqm_rating != None:
+    #         ratings['Costsqm_Range'].append(costsqm_range)
+    #         ratings['Costsqm_Rating'].append(costsqm_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 4:
+    # elif st.session_state.fragment_runs == 4:
 
-        # Investment
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('d. Investment')
-        investment_range = st.selectbox('Please select your preferred investment', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
-                                key = 'invest', index=None, placeholder="Please Select a Value")
-        investment_rating = st.selectbox('I view housing as an investment, and I expect high returns in the next 5 years. (1 - Investment does not matter, 10 - Investment matters)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'invest1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 4/13')
+    #     # Investment
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('d. Investment')
+    #     investment_range = st.selectbox('Please select your preferred investment', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
+    #                             key = 'invest', index=None, placeholder="Please Select a Value")
+    #     investment_rating = st.selectbox('I view housing as an investment, and I expect high returns in the next 5 years. (1 - Investment does not matter, 10 - Investment matters)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'invest1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 4/13')
 
-        if investment_range != None and investment_rating != None:  
-            ratings['Investment_Range'].append(investment_range)
-            ratings['Investment_Rating'].append(investment_rating)
+    #     if investment_range != None and investment_rating != None:  
+    #         ratings['Investment_Range'].append(investment_range)
+    #         ratings['Investment_Rating'].append(investment_rating)
   
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 5:
+    # elif st.session_state.fragment_runs == 5:
 
-        # Floor
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('e. Floor')
-        floor_range = st.selectbox('Please select your preferred floor level', ('Low', 'Mid', 'High'), 
-                                key = 'floor', index=None, placeholder="Please Select a Value")
-        floor_rating = st.selectbox('I prefer living on higher floors as opposed to lower floors. (1 - Lowest Floor, 10 - Highest Floor)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'floor1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 5/13')
+    #     # Floor
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('e. Floor')
+    #     floor_range = st.selectbox('Please select your preferred floor level', ('Low', 'Mid', 'High'), 
+    #                             key = 'floor', index=None, placeholder="Please Select a Value")
+    #     floor_rating = st.selectbox('I prefer living on higher floors as opposed to lower floors. (1 - Lowest Floor, 10 - Highest Floor)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'floor1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 5/13')
 
-        if floor_range != None and floor_rating != None:
-            ratings['Floor_Range'].append(floor_range)
-            ratings['Floor_Rating'].append(floor_rating)
+    #     if floor_range != None and floor_rating != None:
+    #         ratings['Floor_Range'].append(floor_range)
+    #         ratings['Floor_Rating'].append(floor_rating)
            
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 6:
+    # elif st.session_state.fragment_runs == 6:
 
-        # Lease
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('f. Lease')
-        lease_range = st.selectbox('Please select your preferred amount of remaining lease', ('0 to 50 Years Left', '50 to 80 Years Left', 'More than 80 Years Left'), 
-                                key = 'lease', index=None, placeholder="Please Select a Value")
-        lease_rating = st.selectbox('The amount of lease left on the HDB flat matters to me. (1 - Lowest Lease Remaining, 10 - Highest Lease Remaining)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'lease1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 6/13')
+    #     # Lease
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('f. Lease')
+    #     lease_range = st.selectbox('Please select your preferred amount of remaining lease', ('0 to 50 Years Left', '50 to 80 Years Left', 'More than 80 Years Left'), 
+    #                             key = 'lease', index=None, placeholder="Please Select a Value")
+    #     lease_rating = st.selectbox('The amount of lease left on the HDB flat matters to me. (1 - Lowest Lease Remaining, 10 - Highest Lease Remaining)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'lease1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 6/13')
 
-        if lease_range != None and lease_rating != None:
-            ratings['Lease_Range'].append(lease_range)
-            ratings['Lease_Rating'].append(lease_rating)
+    #     if lease_range != None and lease_rating != None:
+    #         ratings['Lease_Range'].append(lease_range)
+    #         ratings['Lease_Rating'].append(lease_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 7:
+    # elif st.session_state.fragment_runs == 7:
 
-        # Age
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('g. Population of Residents')
-        age_range = st.selectbox('Please select the average age range of the residents residing in the HDB flat', ('Young', 'Mid-Age', 'Elderly'), 
-                                key = 'age', index=None, placeholder="Please Select a Value")
-        age_rating = st.selectbox('I prefer to live in HDB flats with a younger population. (1 - Age Does Not Matter, 10 - Age Matters)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'age1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 7/13')
+    #     # Age
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('g. Population of Residents')
+    #     age_range = st.selectbox('Please select the average age range of the residents residing in the HDB flat', ('Young', 'Mid-Age', 'Elderly'), 
+    #                             key = 'age', index=None, placeholder="Please Select a Value")
+    #     age_rating = st.selectbox('I prefer to live in HDB flats with a younger population. (1 - Age Does Not Matter, 10 - Age Matters)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'age1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 7/13')
 
-        if age_range != None and age_rating != None:
-            ratings['Age_Range'].append(age_range)
-            ratings['Age_Rating'].append(age_rating)
+    #     if age_range != None and age_rating != None:
+    #         ratings['Age_Range'].append(age_range)
+    #         ratings['Age_Rating'].append(age_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 8:
+    # elif st.session_state.fragment_runs == 8:
 
-        # Income
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('h. Household Income of Residents')
-        income_range = st.selectbox('Please select the average income level of the residents residing in the HDB flat', ('Low', 'Mid', 'High'), 
-                                key = 'income', index=None, placeholder="Please Select a Value")
-        income_rating = st.selectbox('I prefer to live in HDB flats with a high household income. (1 - Income Does Not Matter, 10 - Income Matters)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'income1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 8/13')
+    #     # Income
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('h. Household Income of Residents')
+    #     income_range = st.selectbox('Please select the average income level of the residents residing in the HDB flat', ('Low', 'Mid', 'High'), 
+    #                             key = 'income', index=None, placeholder="Please Select a Value")
+    #     income_rating = st.selectbox('I prefer to live in HDB flats with a high household income. (1 - Income Does Not Matter, 10 - Income Matters)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'income1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 8/13')
 
-        if income_range != None and income_rating != None:
-            ratings['Income_Range'].append(income_range)
-            ratings['Income_Rating'].append(income_rating)
+    #     if income_range != None and income_rating != None:
+    #         ratings['Income_Range'].append(income_range)
+    #         ratings['Income_Rating'].append(income_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 9:
+    # elif st.session_state.fragment_runs == 9:
 
-        # Park
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('i. Proximity to Parks')
-        park_range = st.selectbox('Please select your preferred proximity to parks', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
-                                key = 'park', index=None, placeholder="Please Select a Value")
-        park_rating = st.selectbox('Proximity to parks is important to me. (1 - Far, 10 - Close By)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'park1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 9/13')
+    #     # Park
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('i. Proximity to Parks')
+    #     park_range = st.selectbox('Please select your preferred proximity to parks', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
+    #                             key = 'park', index=None, placeholder="Please Select a Value")
+    #     park_rating = st.selectbox('Proximity to parks is important to me. (1 - Far, 10 - Close By)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'park1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 9/13')
 
-        if park_range != None and park_rating != None:
-            ratings['Park_Range'].append(park_range)
-            ratings['Park_Rating'].append(park_rating)
+    #     if park_range != None and park_rating != None:
+    #         ratings['Park_Range'].append(park_range)
+    #         ratings['Park_Rating'].append(park_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 10:
+    # elif st.session_state.fragment_runs == 10:
 
-        # Mall
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('j. Proximity to Malls')
-        mall_range = st.selectbox('Please select your preferred proximity to malls', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
-                                key = 'mall', index=None, placeholder="Please Select a Value")
-        mall_rating = st.selectbox('Proximity to malls is important to me. (1 - Far, 10 - Close By)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mall1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 10/13')
+    #     # Mall
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('j. Proximity to Malls')
+    #     mall_range = st.selectbox('Please select your preferred proximity to malls', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
+    #                             key = 'mall', index=None, placeholder="Please Select a Value")
+    #     mall_rating = st.selectbox('Proximity to malls is important to me. (1 - Far, 10 - Close By)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mall1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 10/13')
 
-        if mall_range != None and mall_rating != None:
-            ratings['Mall_Range'].append(mall_range)
-            ratings['Mall_Rating'].append(mall_rating)
+    #     if mall_range != None and mall_rating != None:
+    #         ratings['Mall_Range'].append(mall_range)
+    #         ratings['Mall_Rating'].append(mall_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 11:
+    # elif st.session_state.fragment_runs == 11:
 
-        # Pri Sch
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('k. Proximity to Primary Schools')
-        prisch_range = st.selectbox('Please select your preferred proximity to primary schools', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
-                                key = 'prisch', index=None, placeholder="Please Select a Value")
-        prisch_rating = st.selectbox('Proximity to primary schools is important to me. (1 - Far, 10 - Close By)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'prisch1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 11/13')
+    #     # Pri Sch
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('k. Proximity to Primary Schools')
+    #     prisch_range = st.selectbox('Please select your preferred proximity to primary schools', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
+    #                             key = 'prisch', index=None, placeholder="Please Select a Value")
+    #     prisch_rating = st.selectbox('Proximity to primary schools is important to me. (1 - Far, 10 - Close By)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'prisch1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 11/13')
 
-        if prisch_range != None and prisch_rating != None:
-            ratings['Prisch_Range'].append(prisch_range)
-            ratings['Prisch_Rating'].append(prisch_rating)
+    #     if prisch_range != None and prisch_rating != None:
+    #         ratings['Prisch_Range'].append(prisch_range)
+    #         ratings['Prisch_Rating'].append(prisch_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 12:
+    # elif st.session_state.fragment_runs == 12:
 
-        # MRT
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('l. Proximity to an MRT Station')
-        mrt_range = st.selectbox('Please select your preferred proximity to an MRT station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
-                                key = 'mrt', index=None, placeholder="Please Select a Value")
-        mrt_rating = st.selectbox('Proximity to an MRT station is important to me. (1 - Far, 10 - Close By)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mrt1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 12/13')
+    #     # MRT
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('l. Proximity to an MRT Station')
+    #     mrt_range = st.selectbox('Please select your preferred proximity to an MRT station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
+    #                             key = 'mrt', index=None, placeholder="Please Select a Value")
+    #     mrt_rating = st.selectbox('Proximity to an MRT station is important to me. (1 - Far, 10 - Close By)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mrt1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 12/13')
 
-        if mrt_range != None and mrt_rating != None:
-            ratings['MRT_Range'].append(mrt_range)
-            ratings['MRT_Rating'].append(mrt_rating)
+    #     if mrt_range != None and mrt_rating != None:
+    #         ratings['MRT_Range'].append(mrt_range)
+    #         ratings['MRT_Rating'].append(mrt_rating)
 
-            st.session_state.fragment_runs += 1
-            st.button("Next")
+    #         st.session_state.fragment_runs += 1
+    #         st.button("Next")
 
-    elif st.session_state.fragment_runs == 13:
+    # elif st.session_state.fragment_runs == 13:
 
-        # Bus
-        st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
-        st.subheader('m. Proximity to a Bus Station')
-        bus_range = st.selectbox('Please select your preferred proximity to a bus station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
-                                key = 'bus', index=None, placeholder="Please Select a Value")
-        bus_rating = st.selectbox('Proximity to a bus interchange is important to me. (1 - Far, 10 - Close By)', 
-                                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'bus1', index=None, placeholder="Please Select a Rating")
-        st.write('Progress: 13/13')
+    #     # Bus
+    #     st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
+    #     st.subheader('m. Proximity to a Bus Station')
+    #     bus_range = st.selectbox('Please select your preferred proximity to a bus station', ('Walking Distance', 'A Station Over', 'Does Not Matter'), 
+    #                             key = 'bus', index=None, placeholder="Please Select a Value")
+    #     bus_rating = st.selectbox('Proximity to a bus interchange is important to me. (1 - Far, 10 - Close By)', 
+    #                             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'bus1', index=None, placeholder="Please Select a Rating")
+    #     st.write('Progress: 13/13')
 
-        if bus_range != None and bus_rating != None:
-            ratings['Bus_Range'].append(bus_range)
-            ratings['Bus_Rating'].append(bus_rating)
+    #     if bus_range != None and bus_rating != None:
+    #         ratings['Bus_Range'].append(bus_range)
+    #         ratings['Bus_Rating'].append(bus_rating)
 
-            st.session_state.fragment_runs += 1
-            st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
-            st.button("My Personalized HDB Recommendation")
+    #         st.session_state.fragment_runs += 1
+    #         st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
+    #         st.button("My Personalized HDB Recommendation")
 
 
 
@@ -421,14 +421,14 @@ def fragment():
 
         ######################################################## Visualization ########################################################
         # Prepping main table
-        hdb['score'] = ((hdb['predicted_price_normalized']*ratings['Price_Rating'][0]) + (hdb['price_per_sqm_normalized']*ratings['Costsqm_Rating'][0]) + 
-                        (hdb['projected_5_years_normalized']*ratings['Investment_Rating'][0]) + (hdb['storey_range_normalized']*ratings['Floor_Rating'][0]) + 
-                        (hdb['remaining_mths_lease_normalized']*ratings['Lease_Rating'][0]) + (hdb['avg_age_by_pa_normalized']*ratings['Age_Rating'][0]) + 
-                        (hdb['median_hhi_by_pa_normalized']*ratings['Income_Rating'][0]) + (hdb['dist_hdb_to_park_normalized']*ratings['Park_Rating'][0]) + 
-                        (hdb['dist_hdb_to_mall_normalized']*ratings['Mall_Rating'][0]) + (hdb['dist_hdb_to_prisch_normalized']*ratings['Prisch_Rating'][0]) + 
-                        (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]))
+        # hdb['score'] = ((hdb['predicted_price_normalized']*ratings['Price_Rating'][0]) + (hdb['price_per_sqm_normalized']*ratings['Costsqm_Rating'][0]) + 
+        #                 (hdb['projected_5_years_normalized']*ratings['Investment_Rating'][0]) + (hdb['storey_range_normalized']*ratings['Floor_Rating'][0]) + 
+        #                 (hdb['remaining_mths_lease_normalized']*ratings['Lease_Rating'][0]) + (hdb['avg_age_by_pa_normalized']*ratings['Age_Rating'][0]) + 
+        #                 (hdb['median_hhi_by_pa_normalized']*ratings['Income_Rating'][0]) + (hdb['dist_hdb_to_park_normalized']*ratings['Park_Rating'][0]) + 
+        #                 (hdb['dist_hdb_to_mall_normalized']*ratings['Mall_Rating'][0]) + (hdb['dist_hdb_to_prisch_normalized']*ratings['Prisch_Rating'][0]) + 
+        #                 (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]))
 
-        hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
+        # hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
         # st.write(hdb.head(5))
         # def prox(x):
         #     if x <= 500:
@@ -490,7 +490,7 @@ def fragment():
         town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
         flat_type_filter = st.multiselect('Select Flat Type', options=list(hdb2['flat_type'].unique()), default=list(hdb2['flat_type'].unique()))
 
-        park_filter = st.slider("Select the HDB's proximity to a park", min_value = hdb2.dist_hdb_to_park.min(), max_value = hdb2.dist_hdb_to_park.max(), value = hdb2.dist_hdb_to_park.max())
+        park_filter = st.sidebar.slider("Select the HDB's proximity to a park", min_value = hdb2.dist_hdb_to_park.min(), max_value = hdb2.dist_hdb_to_park.max(), value = hdb2.dist_hdb_to_park.max())
         mall_filter = st.slider("Select the HDB's proximity to a mall", min_value = hdb2.dist_hdb_to_mall.min(), max_value = hdb2.dist_hdb_to_mall.max(), value = hdb2.dist_hdb_to_mall.max())
         prisch_filter = st.slider("Select the HDB's proximity to a Primary School", min_value = hdb2.dist_hdb_to_prisch.min(), max_value = hdb2.dist_hdb_to_prisch.max(), value = hdb2.dist_hdb_to_prisch.max())
         mrt_filter = st.slider("Select the HDB's proximity to an MRT Station", min_value = hdb2.dist_hdb_to_mrt.min(), max_value = hdb2.dist_hdb_to_mrt.max(), value = hdb2.dist_hdb_to_mrt.max())
