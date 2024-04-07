@@ -12,15 +12,14 @@ if "script_runs" not in st.session_state:
 
 @st.experimental_fragment
 def fragment():
-    if st.session_state.fragment_runs == 0:
-        submit  = 0
-        ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 
+    submit  = 0
+    ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 
                 'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 'Floor_Range': [], 'Lease_Range': [], 
                 'Age_Range': [], 'Income_Range': [], 'Park_Range': [], 'Mall_Range': [], 'Prisch_Range': [], 'MRT_Range': [], 'Bus_Range': [], 
                 'Price_Rating': [], 'Size_Rating': [], 'Costsqm_Rating': [], 'Investment_Rating': [], 'Floor_Rating': [], 'Lease_Rating': [], 
                 'Age_Rating': [], 'Income_Rating': [], 'Park_Rating': [], 'Mall_Rating': [], 'Prisch_Rating': [], 'MRT_Rating': [], 
                 'Bus_Rating': []}
-
+    if st.session_state.fragment_runs == 0:
         ######################################################## User Input Form ########################################################
         st.title('Singapore Property Purchase Planner')
 
@@ -105,9 +104,9 @@ def fragment():
             ratings['Grant_Indicator'].append(grant_indicator)
             ratings['Grant_Amount'].append(grant_amount)
 
-            ratings = pd.DataFrame(ratings)
-            st.write(ratings) # For printing table (Remove for launch)
-            ratings.to_csv('ratings.csv')
+            # ratings = pd.DataFrame(ratings)
+            # st.write(ratings) # For printing table (Remove for launch)
+            # ratings.to_csv('ratings.csv')
 
             st.session_state.fragment_runs += 1
             st.button("Next")
@@ -116,11 +115,11 @@ def fragment():
 
 
     elif st.session_state.fragment_runs == 1:
-        ratings = pd.read_csv("ratings.csv")
+        # ratings = pd.read_csv("ratings.csv")
 
-        st.write(ratings.head(5))
-        cpf = ratings['CPF'][0]
-        cash = ratings['Cash'][0]
+        # st.write(ratings.head(5))
+        # cpf = ratings['CPF'][0]
+        # cash = ratings['Cash'][0]
 
         # User inputs for filtering
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
