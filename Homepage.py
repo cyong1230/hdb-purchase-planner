@@ -100,6 +100,15 @@ def fragment():
             st.write(':three: Total cash and cpf proceeds of ${0}'.format(int(cash+cpf)))
             st.subheader(':arrow_right: Your max HDB budget is ${0}'.format(int(budget)))
 
+            ratings['CPF'].append(cpf)
+            ratings['Cash'].append(cash)
+            ratings['Grant_Indicator'].append(grant_indicator)
+            ratings['Grant_Amount'].append(grant_amount)
+
+            ratings = pd.DataFrame(ratings)
+            st.write(ratings) # For printing table (Remove for launch)
+            ratings.to_csv('ratings.csv')
+
             st.session_state.fragment_runs += 1
             st.button("Next")
         elif grant_indicator == 'Nil':
@@ -109,8 +118,10 @@ def fragment():
     elif st.session_state.fragment_runs == 1:
         ratings = pd.read_csv("ratings.csv")
 
+        st.write(ratings.head(5))
         cpf = ratings['CPF'][0]
         cash = ratings['Cash'][0]
+
         # User inputs for filtering
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
 
