@@ -482,7 +482,7 @@ def fragment():
                 & (hdb['dist_hdb_to_mrt'] <= ratings['MRT_Proximity'][0]) 
                 & (hdb['dist_hdb_to_bus'] <= ratings['Bus_Proximity'][0])]
 
-        # st.write(hdb2.head(10)) # For printing table (Remove for launch)
+        st.write(hdb2.head(10)) # For printing table (Remove for launch)
 
         # Dynamic filtering for user
         # ram_filter = st.checkbox('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
