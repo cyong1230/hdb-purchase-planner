@@ -126,6 +126,7 @@ def fragment():
         st.write('')
 
         if price_range != None:
+            st.write('')
             st.session_state.fragment_runs += 1
             st.button("Next")
 
