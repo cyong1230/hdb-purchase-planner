@@ -125,8 +125,8 @@ def fragment():
                                     (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
         st.write('')
 
-        if price_range != None:
-            st.write('')
+        if price_range != None and price_rating != None:
+            # st.write('')
             st.session_state.fragment_runs += 1
             st.button("Next")
 
