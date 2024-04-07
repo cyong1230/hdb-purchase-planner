@@ -11,11 +11,16 @@ if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
 ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 
-            'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 'Floor_Range': [], 'Lease_Range': [], 
-            'Age_Range': [], 'Income_Range': [], 'Park_Range': [], 'Mall_Range': [], 'Prisch_Range': [], 'MRT_Range': [], 'Bus_Range': [], 
-            'Price_Rating': [], 'Size_Rating': [], 'Costsqm_Rating': [], 'Investment_Rating': [], 'Floor_Rating': [], 'Lease_Rating': [], 
-            'Age_Rating': [], 'Income_Rating': [], 'Park_Rating': [], 'Mall_Rating': [], 'Prisch_Rating': [], 'MRT_Rating': [], 
-            'Bus_Rating': []}
+            'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 
+            'Floor_Range': [], 'Lease_Range': [], 'Age_Range': [], 'Income_Range': [], 
+            'Park_Range': [], 'Mall_Range': [], 'Prisch_Range': [], 'MRT_Range': [], 
+            'Bus_Range': [], 
+            'Price_Rating': [], 'Size_Rating': [], 'Costsqm_Rating': [], 'Investment_Rating': [], 
+            'Floor_Rating': [], 'Lease_Rating': [], 'Age_Rating': [], 'Income_Rating': [], 
+            'Park_Rating': [], 'Mall_Rating': [], 'Prisch_Rating': [], 'MRT_Rating': [], 
+            'Bus_Rating': [], 
+            'Park_Proximity': [], 'Mall_Proximity': [], 'Primary_School_Proximity': [], 
+            'MRT_Proximity': [], 'Bus_Proximity': []}
 
 @st.experimental_fragment
 def fragment():
@@ -123,7 +128,7 @@ def fragment():
                                 key = 'price', index=None, placeholder="Please Select a Value")
         price_rating = st.selectbox('I am willing to pay whatever it takes to obtain the best possible flat. (1 - Not Willing, 10 - Willing)', 
                                     (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 1/13')
 
         if price_range != None and price_rating != None:
             ratings['Price_Range'].append(price_range)
@@ -140,7 +145,7 @@ def fragment():
                                 key = 'size', index=None, placeholder="Please Select a Value")
         size_rating = st.selectbox('I prefer to live in a big HDB flat. (1 - Smallest, 10 - Biggest)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'size1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 2/13')
 
         if size_range != None and size_rating != None:
             ratings['Size_Range'].append(size_range)
@@ -158,7 +163,7 @@ def fragment():
                                 key = 'costsqm', index=None, placeholder="Please Select a Value")
         costsqm_rating = st.selectbox('I prefer the price of HDB flats to scale with its size. (1 - High price per sqm, 10 - Low price per sqm)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'costsqm1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 3/13')
 
         if costsqm_range != None and costsqm_rating != None:
             ratings['Costsqm_Range'].append(costsqm_range)
@@ -176,7 +181,7 @@ def fragment():
                                 key = 'invest', index=None, placeholder="Please Select a Value")
         investment_rating = st.selectbox('I view housing as an investment, and I expect high returns in the next 5 years. (1 - Investment does not matter, 10 - Investment matters)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'invest1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 4/13')
 
         if investment_range != None and investment_rating != None:  
             ratings['Investment_Range'].append(investment_range)
@@ -194,7 +199,7 @@ def fragment():
                                 key = 'floor', index=None, placeholder="Please Select a Value")
         floor_rating = st.selectbox('I prefer living on higher floors as opposed to lower floors. (1 - Lowest Floor, 10 - Highest Floor)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'floor1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 5/13')
 
         if floor_range != None and floor_rating != None:
             ratings['Floor_Range'].append(floor_range)
@@ -212,7 +217,7 @@ def fragment():
                                 key = 'lease', index=None, placeholder="Please Select a Value")
         lease_rating = st.selectbox('The amount of lease left on the HDB flat matters to me. (1 - Lowest Lease Remaining, 10 - Highest Lease Remaining)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'lease1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 6/13')
 
         if lease_range != None and lease_rating != None:
             ratings['Lease_Range'].append(lease_range)
@@ -230,7 +235,7 @@ def fragment():
                                 key = 'age', index=None, placeholder="Please Select a Value")
         age_rating = st.selectbox('I prefer to live in HDB flats with a younger population. (1 - Age Does Not Matter, 10 - Age Matters)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'age1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 7/13')
 
         if age_range != None and age_rating != None:
             ratings['Age_Range'].append(age_range)
@@ -248,7 +253,7 @@ def fragment():
                                 key = 'income', index=None, placeholder="Please Select a Value")
         income_rating = st.selectbox('I prefer to live in HDB flats with a high household income. (1 - Income Does Not Matter, 10 - Income Matters)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'income1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 8/13')
 
         if income_range != None and income_rating != None:
             ratings['Income_Range'].append(income_range)
@@ -266,7 +271,7 @@ def fragment():
                                 key = 'park', index=None, placeholder="Please Select a Value")
         park_rating = st.selectbox('Proximity to parks is important to me. (1 - Far, 10 - Close By)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'park1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 9/13')
 
         if park_range != None and park_rating != None:
             ratings['Park_Range'].append(park_range)
@@ -284,7 +289,7 @@ def fragment():
                                 key = 'mall', index=None, placeholder="Please Select a Value")
         mall_rating = st.selectbox('Proximity to malls is important to me. (1 - Far, 10 - Close By)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mall1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 10/13')
 
         if mall_range != None and mall_rating != None:
             ratings['Mall_Range'].append(mall_range)
@@ -302,7 +307,7 @@ def fragment():
                                 key = 'prisch', index=None, placeholder="Please Select a Value")
         prisch_rating = st.selectbox('Proximity to primary schools is important to me. (1 - Far, 10 - Close By)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'prisch1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 11/13')
 
         if prisch_range != None and prisch_rating != None:
             ratings['Prisch_Range'].append(prisch_range)
@@ -320,7 +325,7 @@ def fragment():
                                 key = 'mrt', index=None, placeholder="Please Select a Value")
         mrt_rating = st.selectbox('Proximity to an MRT station is important to me. (1 - Far, 10 - Close By)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'mrt1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 12/13')
 
         if mrt_range != None and mrt_rating != None:
             ratings['MRT_Range'].append(mrt_range)
@@ -338,7 +343,7 @@ def fragment():
                                 key = 'bus', index=None, placeholder="Please Select a Value")
         bus_rating = st.selectbox('Proximity to a bus interchange is important to me. (1 - Far, 10 - Close By)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'bus1', index=None, placeholder="Please Select a Rating")
-        st.write('')
+        st.write('Progress: 13/13')
 
         if bus_range != None and bus_rating != None:
             ratings['Bus_Range'].append(bus_range)
@@ -444,12 +449,16 @@ def fragment():
             else:
                 return 100000
 
-        ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
-        ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
-        ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
-        ratings['MRT_Proximity'] = ratings.MRT_Range.apply(prox)
-        ratings['Bus_Proximity'] = ratings.Bus_Range.apply(prox)
-
+        # ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
+        # ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
+        # ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
+        # ratings['MRT_Proximity'] = ratings.MRT_Range.apply(prox)
+        # ratings['Bus_Proximity'] = ratings.Bus_Range.apply(prox)
+        ratings['Park_Proximity'].append(prox(ratings['Park_Range'[0]]))
+        ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'[0]]))
+        ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'[0]]))
+        ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'[0]]))
+        ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'[0]]))
         # st.write(hdb.head(20)) # For printing table (Remove for launch)
         # st.write(ratings.head()) # For printing table (Remove for launch)
 
