@@ -7,15 +7,13 @@ st.set_page_config(
     layout = 'wide',
     )
 
-submit = 0
-
 if "script_runs" not in st.session_state:
-    st.session_state.script_runs = 0
     st.session_state.fragment_runs = 0
 
 @st.experimental_fragment
 def fragment():
     if st.session_state.fragment_runs == 0:
+        submit  = 0
         ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 
                 'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 'Floor_Range': [], 'Lease_Range': [], 
                 'Age_Range': [], 'Income_Range': [], 'Park_Range': [], 'Mall_Range': [], 'Prisch_Range': [], 'MRT_Range': [], 'Bus_Range': [], 
@@ -103,7 +101,8 @@ def fragment():
             st.write(':three: Total cash and cpf proceeds of ${0}'.format(int(cash+cpf)))
             st.subheader(':arrow_right: Your max HDB budget is ${0}'.format(int(budget)))
 
-            preferences = 1
+            st.session_state.fragment_runs += 1
+            st.button("Next")
         elif grant_indicator == 'Nil':
             st.header(':neutral_face: You are not eligible to purchase a resale HDB')
 
