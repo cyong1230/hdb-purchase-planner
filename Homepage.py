@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(
-    page_title = 'Singapore Property Purchase Planner',
-    page_icon = '?',
-    layout = 'wide',
-    )
+# st.set_page_config(
+#     page_title = 'Singapore Property Purchase Planner',
+#     page_icon = '?',
+#     layout = 'wide',
+#     )
 
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
