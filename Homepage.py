@@ -451,8 +451,8 @@ def fragment():
                 return 1000
             else:
                 return 100000
-        # ram = prox(ratings['Park_Range'[0]])
-        # st.write(ram)
+        ram = ratings['Park_Range'[0]]
+        st.write(ram)
         # ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
         # ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
         # ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
