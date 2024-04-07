@@ -451,8 +451,8 @@ def fragment():
                 return 1000
             else:
                 return 100000
-        ram = prox(ratings['Park_Range'[0]])
-        st.write(ram)
+        # ram = prox(ratings['Park_Range'[0]])
+        # st.write(ram)
         # ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
         # ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
         # ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
@@ -463,6 +463,11 @@ def fragment():
         ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'[0]]))
         ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'[0]]))
         ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'[0]]))
+        ratings['Park_Proximity'].append(1000000)
+        ratings['Mall_Proximity'].append(1000000)
+        ratings['Primary_School_Proximity'].append(1000000)
+        ratings['MRT_Proximity'].append(1000000)
+        ratings['Bus_Proximity'].append(1000000)
         # st.write(hdb.head(20)) # For printing table (Remove for launch)
         # st.write(ratings.head()) # For printing table (Remove for launch)
 
