@@ -2,12 +2,10 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(
-    page_title = 'Multipage App',
+    page_title = 'Singapore Property Purchase Planner',
     page_icon = '?',
     layout = 'wide',
     )
-
-st.sidebar.success('Select a page above')
 
 submit = 0
 
