@@ -421,14 +421,14 @@ def fragment():
 
         ######################################################## Visualization ########################################################
         # Prepping main table
-        # hdb['score'] = ((hdb['predicted_price_normalized']*ratings['Price_Rating'][0]) + (hdb['price_per_sqm_normalized']*ratings['Costsqm_Rating'][0]) + 
-        #                 (hdb['projected_5_years_normalized']*ratings['Investment_Rating'][0]) + (hdb['storey_range_normalized']*ratings['Floor_Rating'][0]) + 
-        #                 (hdb['remaining_mths_lease_normalized']*ratings['Lease_Rating'][0]) + (hdb['avg_age_by_pa_normalized']*ratings['Age_Rating'][0]) + 
-        #                 (hdb['median_hhi_by_pa_normalized']*ratings['Income_Rating'][0]) + (hdb['dist_hdb_to_park_normalized']*ratings['Park_Rating'][0]) + 
-        #                 (hdb['dist_hdb_to_mall_normalized']*ratings['Mall_Rating'][0]) + (hdb['dist_hdb_to_prisch_normalized']*ratings['Prisch_Rating'][0]) + 
-        #                 (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]))
+        hdb['score'] = ((hdb['predicted_price_normalized']*ratings['Price_Rating'][0]) + (hdb['price_per_sqm_normalized']*ratings['Costsqm_Rating'][0]) + 
+                        (hdb['projected_5_years_normalized']*ratings['Investment_Rating'][0]) + (hdb['storey_range_normalized']*ratings['Floor_Rating'][0]) + 
+                        (hdb['remaining_mths_lease_normalized']*ratings['Lease_Rating'][0]) + (hdb['avg_age_by_pa_normalized']*ratings['Age_Rating'][0]) + 
+                        (hdb['median_hhi_by_pa_normalized']*ratings['Income_Rating'][0]) + (hdb['dist_hdb_to_park_normalized']*ratings['Park_Rating'][0]) + 
+                        (hdb['dist_hdb_to_mall_normalized']*ratings['Mall_Rating'][0]) + (hdb['dist_hdb_to_prisch_normalized']*ratings['Prisch_Rating'][0]) + 
+                        (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]))
 
-        # hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
+        hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
         # st.write(hdb.head(5))
         # def prox(x):
         #     if x <= 500:
@@ -469,7 +469,7 @@ def fragment():
         # ratings['MRT_Proximity'].append(1000000)
         # ratings['Bus_Proximity'].append(1000000)
 
-        st.write('IT passed here')
+        # st.write('IT passed here')
         # st.write(hdb.head(20)) # For printing table (Remove for launch)
         # st.write(ratings.head()) # For printing table (Remove for launch)
 
