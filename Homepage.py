@@ -28,7 +28,6 @@ def fragment():
         st.header('1) Please answer these questions to calculate your budget')
 
         grant_indicator = ''
-        preferences = 0
 
 
         user_age = st.number_input('Age', min_value = 0, value = None)
@@ -108,6 +107,10 @@ def fragment():
 
 
     elif st.session_state.fragment_runs == 1:
+        ratings = pd.read_csv("ratings.csv")
+
+        cpf = ratings['CPF'][0]
+        cash = ratings['Cash'][0]
         # User inputs for filtering
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
 
