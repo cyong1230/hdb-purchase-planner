@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 st.title('Your personalized HDB Recommendation')
 
 ratings = pd.read_csv("ratings.csv")
-hdb = pd.read_csv(r"C:\Users\B_Ash\HDB\hdb.csv")
+hdb = pd.read_csv("hdb.csv")
 del hdb['Unnamed: 0']
 
 
