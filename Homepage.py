@@ -126,7 +126,7 @@ def fragment():
 
         # Price
         st.subheader('a. Price')
-        price_range = st.selectbox('Please select your price range', ('0 to 400 Thousand', '400 Thousand to 1 Million', 'More than 1 Million'), 
+        price_range = st.selectbox('Please select your price range', ('0 to 400 Thousand', '400 Thousand to 650 Thousand', 'More than 650 Thousand'), 
                                 key = 'price', index=None, placeholder="Please Select a Value")
         price_rating = st.selectbox('I am willing to pay whatever it takes to obtain the best possible flat. (1 - Not Willing, 10 - Willing)', 
                                     (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'price1', index=None, placeholder="Please Select a Rating")
@@ -143,7 +143,7 @@ def fragment():
         # Size
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('b. Size')
-        size_range = st.selectbox('Please select your preferred size (sqm)', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
+        size_range = st.selectbox('Please select your preferred size (sqm)', ('0 to 70 sqm', '70 sqm to 100 sqm', 'More than 100 sqm'), 
                                 key = 'size', index=None, placeholder="Please Select a Value")
         size_rating = st.selectbox('I prefer to live in a big HDB flat. (1 - Smallest, 10 - Biggest)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'size1', index=None, placeholder="Please Select a Rating")
@@ -161,7 +161,7 @@ def fragment():
         # Cost per sqm
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('c. Cost per sqm')
-        costsqm_range = st.selectbox('Please select your preferred cost per sqm', ('0 to 60 sqm', '60 sqm to 90 sqm', 'More than 90 sqm'), 
+        costsqm_range = st.selectbox('Please select your preferred cost per sqm', ('0 to 4500', '4500 to 6000', 'More than 6000'), 
                                 key = 'costsqm', index=None, placeholder="Please Select a Value")
         costsqm_rating = st.selectbox('I prefer the price of HDB flats to scale with its size. (1 - High price per sqm, 10 - Low price per sqm)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'costsqm1', index=None, placeholder="Please Select a Rating")
@@ -215,7 +215,7 @@ def fragment():
         # Lease
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('f. Lease')
-        lease_range = st.selectbox('Please select your preferred amount of remaining lease', ('0 to 50 Years Left', '50 to 80 Years Left', 'More than 80 Years Left'), 
+        lease_range = st.selectbox('Please select your preferred amount of remaining lease', ('0 to 60 Years Left', '60 to 80 Years Left', 'More than 80 Years Left'), 
                                 key = 'lease', index=None, placeholder="Please Select a Value")
         lease_rating = st.selectbox('The amount of lease left on the HDB flat matters to me. (1 - Lowest Lease Remaining, 10 - Highest Lease Remaining)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'lease1', index=None, placeholder="Please Select a Rating")
@@ -251,7 +251,7 @@ def fragment():
         # Income
         st.header('2) Please answer these questions indicating your preferences for your HDB Flat')
         st.subheader('h. Household Income of Residents')
-        income_range = st.selectbox('Please select the average income level of the residents residing in the HDB flat', ('Low', 'Mid', 'High'), 
+        income_range = st.selectbox('Please select the average income level of the residents residing in the HDB flat', ('0 to 6500', '6500 to 8500', 'More than 8500'), 
                                 key = 'income', index=None, placeholder="Please Select a Value")
         income_rating = st.selectbox('I prefer to live in HDB flats with a high household income. (1 - Income Does Not Matter, 10 - Income Matters)', 
                                 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key = 'income1', index=None, placeholder="Please Select a Rating")
