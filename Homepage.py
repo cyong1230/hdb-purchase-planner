@@ -7,8 +7,6 @@ st.set_page_config(
     layout = 'wide',
     )
 
-# st.sidebar()
-
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
@@ -26,7 +24,6 @@ ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [],
 
 @st.experimental_fragment
 def fragment():
-    # submit  = 0
     global ratings
 
     if st.session_state.fragment_runs == 0:
@@ -355,55 +352,9 @@ def fragment():
             st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
             st.button("My Personalized HDB Recommendation")
 
-
-
-
-        # if st.button('Submit'):
-            # ratings['CPF'].append(cpf)
-            # ratings['Cash'].append(cash)
-            # ratings['Grant_Indicator'].append(grant_indicator)
-            # ratings['Grant_Amount'].append(grant_amount)
-
-            # ratings['Price_Range'].append(price_range)
-            # ratings['Size_Range'].append(size_range)
-            # ratings['Costsqm_Range'].append(costsqm_range)
-            # ratings['Investment_Range'].append(investment_range)
-            # ratings['Floor_Range'].append(floor_range)
-            # ratings['Lease_Range'].append(lease_range)
-            # ratings['Age_Range'].append(age_range)
-            # ratings['Income_Range'].append(income_range)
-            # ratings['Park_Range'].append(park_range)
-            # ratings['Mall_Range'].append(mall_range)
-            # ratings['Prisch_Range'].append(prisch_range)
-            # ratings['MRT_Range'].append(mrt_range)
-            # ratings['Bus_Range'].append(bus_range)
-
-            # ratings['Price_Rating'].append(price_rating)
-            # ratings['Size_Rating'].append(size_rating)
-            # ratings['Costsqm_Rating'].append(costsqm_rating)
-            # ratings['Investment_Rating'].append(investment_rating)
-            # ratings['Floor_Rating'].append(floor_rating)
-            # ratings['Lease_Rating'].append(lease_rating)
-            # ratings['Age_Rating'].append(age_rating)
-            # ratings['Income_Rating'].append(income_rating)
-            # ratings['Park_Rating'].append(park_rating)
-            # ratings['Mall_Rating'].append(mall_rating)
-            # ratings['Prisch_Rating'].append(prisch_rating)
-            # ratings['MRT_Rating'].append(mrt_rating)
-            # ratings['Bus_Rating'].append(bus_rating)
-
-            # ratings = pd.DataFrame(ratings)
-            # # st.write(ratings) # For printing table (Remove for launch)
-            # ratings.to_csv('ratings.csv')
-
-            # st.session_state.fragment_runs += 1
-            # st.subheader('Thank you for submitting, please click the button below to proceed to your personalized HDB recommendation')
-            # st.button("My Personalized HDB Recommendation")
-
     else:
         st.title('Your personalized HDB Recommendation')
 
-        # ratings = pd.read_csv("ratings.csv")
         hdb = pd.read_csv("hdb.csv")
         del hdb['Unnamed: 0']
 
@@ -431,20 +382,6 @@ def fragment():
                         (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]))
 
         hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
-        # st.write(hdb.head(5))
-        # def prox(x):
-        #     if x <= 500:
-        #         return 'Walking Distance'
-        #     elif x <= 1000:
-        #         return 'A Station Over'
-        #     else:
-        #         return 'Does Not Matter'
-
-        # hdb['Park_Proximity'] = hdb.dist_hdb_to_park.apply(prox)
-        # hdb['Mall_Proximity'] = hdb.dist_hdb_to_mall.apply(prox)
-        # hdb['Primary_School_Proximity'] = hdb.dist_hdb_to_prisch.apply(prox)
-        # hdb['MRT_Proximity'] = hdb.dist_hdb_to_mrt.apply(prox)
-        # hdb['Bus_Proximity'] = hdb.dist_hdb_to_bus.apply(prox)
 
         def prox(x):
             if x == 'Walking Distance':
@@ -453,13 +390,6 @@ def fragment():
                 return 1000
             else:
                 return 100000
-        # ram = ratings['Park_Range'[0]]
-        # st.write(ram)
-        # ratings['Park_Proximity'] = ratings.Park_Range.apply(prox)
-        # ratings['Mall_Proximity'] = ratings.Mall_Range.apply(prox)
-        # ratings['Primary_School_Proximity'] = ratings.Prisch_Range.apply(prox)
-        # ratings['MRT_Proximity'] = ratings.MRT_Range.apply(prox)
-        # ratings['Bus_Proximity'] = ratings.Bus_Range.apply(prox)
 
         ratings['Park_Proximity'].append(prox(ratings['Park_Range'][0]))
         ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'][0]))
@@ -467,29 +397,12 @@ def fragment():
         ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'][0]))
         ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'][0]))
 
-        # ratings['Park_Proximity'].append(1000000)
-        # ratings['Mall_Proximity'].append(1000000)
-        # ratings['Primary_School_Proximity'].append(1000000)
-        # ratings['MRT_Proximity'].append(1000000)
-        # ratings['Bus_Proximity'].append(1000000)
-
-        # st.write('IT passed here')
-        # st.write(hdb.head(20)) # For printing table (Remove for launch)
-        # st.write(ratings.head()) # For printing table (Remove for launch)
-
         # Filtering main table based on user input
         hdb2 = hdb[(hdb['dist_hdb_to_park'] <= ratings['Park_Proximity'][0]) 
                 & (hdb['dist_hdb_to_mall'] <= ratings['Mall_Proximity'][0]) 
                 & (hdb['dist_hdb_to_prisch'] <= ratings['Primary_School_Proximity'][0]) 
                 & (hdb['dist_hdb_to_mrt'] <= ratings['MRT_Proximity'][0]) 
                 & (hdb['dist_hdb_to_bus'] <= ratings['Bus_Proximity'][0])]
-
-        # st.write(hdb2.head(10)) # For printing table (Remove for launch)
-
-        # Dynamic filtering for user
-        # ram_filter = st.checkbox('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
-        # with st.expander("Choose columns"):
-        #     town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=None)
 
         town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
         flat_type_filter = st.multiselect('Select Flat Type', options=list(hdb2['flat_type'].unique()), default=list(hdb2['flat_type'].unique()))
@@ -510,12 +423,10 @@ def fragment():
                             & (hdb2['dist_hdb_to_mrt'] <= mrt_filter) 
                             & (hdb2['dist_hdb_to_bus'] <= bus_filter)]
 
-        # st.write(filtered_hdb.head(5))
         filtered_hdb = filtered_hdb.sort_values(by=['score'], ascending=False)
         filtered_hdb = filtered_hdb.reset_index(drop=True)
         filtered_hdb.index = filtered_hdb.index + 1
-        # filtered_hdb = filtered_hdb.head(10)
-        # st.write(filtered_hdb.head(5))
+
         # Output Table
         st.write('Your top 10 most recommended HDB Flats')
         st.dataframe(filtered_hdb)
