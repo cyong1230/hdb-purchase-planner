@@ -385,6 +385,22 @@ def fragment():
 
         hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
 
+        def prox_price(x):
+            if x == '0 to 400 Thousand':
+                return 400000
+            elif x == '400 Thousand to 650 Thousand':
+                return 650000
+            else:
+                return 1000000000000
+            
+        def prox_size(x):
+            if x == '0 to 70 sqm':
+                return 70
+            elif x == '70 sqm to 100 sqm':
+                return 100
+            else:
+                return 10000
+
         def prox(x):
             if x == 'Walking Distance':
                 return 500
@@ -393,6 +409,15 @@ def fragment():
             else:
                 return 100000
 
+        ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        ratings['Size_Filter'].append(prox_size(ratings['Size_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
+        
         ratings['Park_Proximity'].append(prox(ratings['Park_Range'][0]))
         ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'][0]))
         ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'][0]))
