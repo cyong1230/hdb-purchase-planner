@@ -18,7 +18,9 @@ ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [],
             'Price_Rating': [], 'Size_Rating': [], 'Costsqm_Rating': [], 'Investment_Rating': [], 
             'Floor_Rating': [], 'Lease_Rating': [], 'Age_Rating': [], 'Income_Rating': [], 
             'Park_Rating': [], 'Mall_Rating': [], 'Prisch_Rating': [], 'MRT_Rating': [], 
-            'Bus_Rating': [], 
+            'Bus_Rating': [],
+            'Price_Filter': [], 'Size_Filter': [], 'Costsqm_Filter': [], 'Investment_Filter': [],
+            'Floor_Filter': [], 'Lease_Filter': [], 'Age_Filter': [], 'Income_Filter': [],
             'Park_Proximity': [], 'Mall_Proximity': [], 'Primary_School_Proximity': [], 
             'MRT_Proximity': [], 'Bus_Proximity': []}
 
