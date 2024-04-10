@@ -1,11 +1,36 @@
 import streamlit as st
 import pandas as pd
+from google.oauth2 import service_account
+from google.cloud import bigquery
 
 st.set_page_config(
     page_title = 'Singapore Property Purchase Planner',
     page_icon = '?',
     layout = 'wide',
     )
+
+# Create API client.
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
+)
+client = bigquery.Client(credentials=credentials)
+
+# Perform query.
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
+@st.cache_data(ttl=600)
+def run_query(query):
+    query_job = client.query(query)
+    rows_raw = query_job.result()
+    # Convert to list of dicts. Required for st.cache_data to hash the return value.
+    rows = [dict(row) for row in rows_raw]
+    return rows
+
+rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
+
+# Print results.
+st.write("Total Count: ")
+for row in rows:
+    st.write(row['count_row'])
 
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
