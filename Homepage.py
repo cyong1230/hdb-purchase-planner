@@ -26,6 +26,7 @@ def run_query(query):
     return rows
 
 rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
+ram = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
 
 # query_job = client.query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
 # result = client.query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000").to_dataframe()
@@ -36,7 +37,7 @@ for row in rows:
     st.write(row['count_row'])
     # st.write(row)
 
-df = pd.DataFrame(rows)
+df = pd.DataFrame(ram)
 
 st.write(df.head(5))
 
