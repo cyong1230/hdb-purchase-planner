@@ -26,20 +26,16 @@ def run_query(query):
     return rows
 
 rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-ram = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-
-# query_job = client.query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-# result = client.query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000").to_dataframe()
+df_dict = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
 
 # Print results.
 st.write("Total Count: ")
 for row in rows:
     st.write(row['count_row'])
-    # st.write(row)
 
-df = pd.DataFrame(ram)
+hdb = pd.DataFrame(df_dict)
 
-st.write(df.head(5))
+st.write(hdb.head(5))
 
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
