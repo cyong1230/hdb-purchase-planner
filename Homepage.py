@@ -38,6 +38,8 @@ for row in rows:
 
 df = pd.DataFrame(rows)
 
+st.write(df.head(5))
+
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
