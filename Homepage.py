@@ -27,6 +27,8 @@ def run_query(query):
 
 rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
 
+st.write(rows)
+
 # Print results.
 st.write("Total Count: ")
 for row in rows:
