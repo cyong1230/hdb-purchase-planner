@@ -527,7 +527,7 @@ def fragment():
         # Final Dataframe
         filtered_hdb = hdb2[hdb2['town'].isin(town_filter) 
                             & hdb2['flat_type'].isin(flat_type_filter) 
-                            & hdb2['resale_price'].isin(price_filter) 
+                            & (hdb2['resale_price'] <= price_filter) 
                             & (hdb2['floor_area_sqm'] <= size_filter) 
                             & (hdb2['price_per_sqm'] <= costsqm_filter) 
                             & (hdb2['remaining_mths_left_asof_2024'] <= lease_filter) 
