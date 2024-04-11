@@ -36,6 +36,8 @@ for row in rows:
     st.write(row['count_row'])
     # st.write(row)
 
+df = pd.DataFrame(rows)
+
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
