@@ -389,7 +389,7 @@ def fragment():
         st.title('Your personalized HDB Recommendation')
 
         # hdb = pd.read_csv("hdb.csv")
-        del hdb['Unnamed: 0']
+        # del hdb['Unnamed: 0']
 
 
         ######################################################## Budget Calculator ########################################################
