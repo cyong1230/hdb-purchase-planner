@@ -28,7 +28,7 @@ def run_query(query):
 rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
 
 query_job = client.query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-result = query_job.to_dataframe()
+result = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000").to_dataframe()
 
 # Print results.
 st.write("Total Count: ")
