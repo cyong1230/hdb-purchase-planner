@@ -57,6 +57,7 @@ ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [],
 @st.experimental_fragment
 def fragment():
     global ratings
+    global hdb
 
     if st.session_state.fragment_runs == 0:
         ######################################################## User Input Form ########################################################
