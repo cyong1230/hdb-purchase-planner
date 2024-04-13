@@ -26,7 +26,7 @@ def run_query(query):
     return rows
 
 rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-df_dict = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 100000")
+df_dict = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 10000")
 
 # Print results.
 st.write("Total Count: ")
