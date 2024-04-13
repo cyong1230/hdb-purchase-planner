@@ -35,7 +35,10 @@ for row in rows:
 
 hdb = pd.DataFrame(df_dict)
 
+ram = hdb['storey_range'].unique()
+st.write(ram)
 hdb['level'] = hdb['storey_range']
+# df['NewCol'] = df['Col2'].str.extract(r'(\w+(?:\.\d+)+)', expand=False)
 
 st.write(hdb.head(5))
 
