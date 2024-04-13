@@ -39,7 +39,9 @@ hdb = pd.DataFrame(df_dict)
 hdb['first_level'] = hdb['storey_range'].str.extract(r'^(\d{2}).*$')
 hdb['last_level'] = hdb['storey_range'].str.extract(r'^.*(\d{2})$')
 # df['NewCol'] = df['Col2'].str.extract(r'(\w+(?:\.\d+)+)', expand=False)
-hdb['level'] = (int(hdb['first_level']) + int(hdb['last_level']))/2
+hdb['first_level'] = hdb['first_level'].astype(int)
+hdb['last_level'] = hdb['last_level'].astype(int)
+hdb['level'] = (hdb['first_level'] + hdb['last_level'])/2
 
 ram = hdb['storey_range'].unique()
 st.write(ram)
