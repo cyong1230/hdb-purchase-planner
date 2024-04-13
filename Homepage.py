@@ -38,8 +38,16 @@ hdb = pd.DataFrame(df_dict)
 ram = hdb['storey_range'].unique()
 st.write(ram)
 hdb['first_level'] = hdb['storey_range'].str.extract(r'^(\d{2}).*$')
+hdb['last_level'] = hdb['storey_range'].str.extract(r'^.*(\d{2})$')
 # df['NewCol'] = df['Col2'].str.extract(r'(\w+(?:\.\d+)+)', expand=False)
 hdb['level'] = hdb['storey_range']
+
+ram = hdb['storey_range'].unique()
+st.write(ram)
+ram1 = hdb['first_level'].unique()
+st.write(ram1)
+ram2 = hdb['last_level'].unique()
+st.write(ram2)
 
 st.write(hdb.head(5))
 
