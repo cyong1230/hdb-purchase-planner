@@ -35,6 +35,8 @@ for row in rows:
 
 hdb = pd.DataFrame(df_dict)
 
+hdb['level'] = hdb['storey_range']
+
 st.write(hdb.head(5))
 
 if "script_runs" not in st.session_state:
@@ -387,9 +389,6 @@ def fragment():
 
     else:
         st.title('Your personalized HDB Recommendation')
-
-        # hdb = pd.read_csv("hdb.csv")
-        # del hdb['Unnamed: 0']
 
 
         ######################################################## Budget Calculator ########################################################
