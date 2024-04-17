@@ -51,7 +51,7 @@ def run_query(query):
 # st.write(hdb.shape[0])
 
 if "script_runs" not in st.session_state:
-    st.session_state.fragment_runs = 1
+    st.session_state.fragment_runs = 0
 
 ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 'Grant_Rooms': [],
             'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 
@@ -171,8 +171,8 @@ def fragment():
     elif st.session_state.fragment_runs == 1:
         st.write("#")
         # test values
-        ratings['Price_Range'].append(int(1000000))
-        ratings['Grant_Rooms'].append("4 ROOM")
+        # ratings['Price_Range'].append(int(1000000))
+        # ratings['Grant_Rooms'].append("4 ROOM")
 
         # hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
         if ratings['Grant_Rooms'][0] == '5 ROOM or larger':
