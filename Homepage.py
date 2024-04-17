@@ -201,7 +201,7 @@ def fragment():
         st.write("#")
 
         # Investment
-        st.subheader('3. I view housing as an investment, and I expect high returns in the next 5 years, at least ')
+        st.subheader('3. I view housing as an investment, and I expect high returns in the next 5 years, with at least ')
         c1, c2 = st.columns((1,3))
         with c1:
             investment_range = st.selectbox('investment', ('10% growth', '20% growth', '30% growth'), key = 'investment_range', index=1, placeholder="", label_visibility="collapsed")
@@ -231,13 +231,13 @@ def fragment():
         st.write("#")
         
         # Lease
-        st.subheader('5. I am looking for areas with a long lease.')
+        st.subheader('5. I am looking for flats with a long lease.')
         lease_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='lease_rating')
         ratings['Lease_Rating'].append(lease_rating)
         st.write("#")
 
         # Age
-        st.subheader('6. I prefer to live in flats with a ')
+        st.subheader('6. I prefer to live in an area with a ')
         c7, c8 = st.columns((1,3))
         with c7:
             age_range = st.selectbox('age', ('Young population', 'Mid-Age population', 'Elderly population'), key = 'age_range', index=0, placeholder="", label_visibility="collapsed")
@@ -252,37 +252,37 @@ def fragment():
         st.write("#")
 
         # Income
-        st.subheader('7. I prefer to live in HDB flats with a high household income.')
+        st.subheader('7. I prefer to live in an area with a high median household income.')
         income_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='income_rating')
         ratings['Income_Rating'].append(income_rating)
         st.write("#")
 
         # MRT
-        st.subheader('8. I prefer to stay within 10 mins walking distance to the nearby MRT.')
+        st.subheader('8. I prefer to stay within 10 mins walking distance to the nearest MRT station.')
         mrt_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mrt_rating')
         ratings['MRT_Rating'].append(mrt_rating)
         st.write("#")
 
         # Bus
-        st.subheader('9. I prefer to stay within 10 mins walking distance to the nearby bus interchange.')
+        st.subheader('9. I prefer to stay within 10 mins walking distance to the nearest bus interchange.')
         bus_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='bus_rating')
         ratings['Bus_Rating'].append(bus_rating)
         st.write("#")
 
         # Park
-        st.subheader('10. I prefer to stay within 10 mins walking distance to the nearby park.')
+        st.subheader('10. I prefer to stay within 10 mins walking distance to the nearest park.')
         park_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='park_rating')
         ratings['Park_Rating'].append(park_rating)
         st.write("#")
 
         # Mall
-        st.subheader('11. I prefer to stay within 10 mins walking distance to the nearby shopping mall.')
+        st.subheader('11. I prefer to stay within 10 mins walking distance to the nearest shopping mall.')
         mall_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mall_rating')
         ratings['Mall_Rating'].append(mall_rating)
         st.write("#")
 
         # Pri Sch
-        st.subheader('12. I prefer to stay within 10 mins walking distance to the nearby primary school.')
+        st.subheader('12. I prefer to stay within 10 mins walking distance to the nearest primary school.')
         prisch_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='prisch_rating')
         ratings['Prisch_Rating'].append(prisch_rating)
         st.write("#")
