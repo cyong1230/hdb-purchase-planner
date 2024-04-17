@@ -204,7 +204,7 @@ def fragment():
         st.subheader('3. I view housing as an investment, and I expect high returns in the next 5 years, at least ')
         c1, c2 = st.columns((1,3))
         with c1:
-            investment_range = st.selectbox('investment', ('10% growth', '20% growth', '30% growth'), key = 'investment_range', index=0, placeholder="", label_visibility="collapsed")
+            investment_range = st.selectbox('investment', ('10% growth', '20% growth', '30% growth'), key = 'investment_range', index=1, placeholder="", label_visibility="collapsed")
 
         with c2:
             st.write("#")
@@ -216,10 +216,10 @@ def fragment():
         st.write("#")
 
         # Floor
-        st.subheader('4. I prefer apartments that are located on the ')
+        st.subheader('4. I prefer flats that are located on the ')
         c4, c5 = st.columns((1,3))
         with c4:
-            floor_range = st.selectbox('floor', ('Low floors', 'Mid floors', 'High floors'), key = 'floor_range', index=0, placeholder="", label_visibility="collapsed")
+            floor_range = st.selectbox('floor', ('Low floors', 'Mid floors', 'High floors'), key = 'floor_range', index=2, placeholder="", label_visibility="collapsed")
 
         with c5:
             st.write("#")
