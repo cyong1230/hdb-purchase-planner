@@ -51,7 +51,7 @@ def run_query(query):
 # st.write(hdb.shape[0])
 
 if "script_runs" not in st.session_state:
-    st.session_state.fragment_runs = 1
+    st.session_state.fragment_runs = 0
 
 ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 'Grant_Rooms': [],
             'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 
@@ -171,8 +171,8 @@ def fragment():
     elif st.session_state.fragment_runs == 1:
         st.write("#")
         # test values
-        ratings['Price_Range'].append(int(1000000))
-        ratings['Grant_Rooms'].append("4 ROOM")
+        # ratings['Price_Range'].append(int(1000000))
+        # ratings['Grant_Rooms'].append("4 ROOM")
 
         # hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
         if ratings['Grant_Rooms'][0] == '5 ROOM or larger':
@@ -186,7 +186,7 @@ def fragment():
 
         st.write("#")
 
-        # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from high to low)
+        # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from low to high)
         st.subheader('1. I prefer flats that are value for money.')
         costsqm_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='costsqm_rating')
         ratings['Costsqm_Rating'].append(costsqm_rating)
@@ -316,6 +316,7 @@ def fragment():
                 ,MIN(postal) AS postal
                 ,MIN(lat) AS lat
                 ,MIN(lon) AS lon
+                ,MIN(remaining_yrs_left_asof_2024) AS remaining_yrs_left_asof_2024
                 ,MIN(remaining_mths_left_asof_2024) AS remaining_mths_left_asof_2024
                 ,MIN(pln_area_n) AS pln_area_n
                 ,MIN(subzone_n) AS subzone_n
@@ -346,6 +347,7 @@ def fragment():
                 ,MIN(remaining_mths_lease_normalized) AS remaining_mths_lease_normalized
                 ,MIN(floor_area_sqm_normalized) AS floor_area_sqm_normalized
                 ,MIN(multiplier_effect) AS investment_rate
+                ,AVG(price_per_sqm) AS price_per_sqm
                 ,AVG(price_per_sqm_normalized) AS price_per_sqm_normalized
                 ,AVG(predicted_price) AS predicted_price
                 ,AVG(projected_5_years) AS projected_5_years
@@ -357,36 +359,56 @@ def fragment():
                 ),
                 t2 AS (
                 SELECT *,
-                CASE WHEN t1.investment_rate >= '{ratings['Investment_Range'][0]}' THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
+                CASE WHEN t1.investment_rate >= SAFE_CAST('{ratings['Investment_Range'][0]}' AS FLOAT64) THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
                 CASE WHEN t1.population_age = '{ratings['Age_Range'][0]}' THEN 1 ELSE 0.8 END AS population_weightage_multiplier
                 FROM t1
                 )
-                SELECT *,
-                (
-                '{ratings['Costsqm_Rating'][0]}' * price_per_sqm_normalized +
-                '{ratings['Size_Rating'][0]}' * floor_area_sqm_normalized +
-                '{ratings['Investment_Rating'][0]}' * investment_weightage_multiplier * investment_rate +
-                '{ratings['Lease_Rating'][0]}' * remaining_mths_lease_normalized +
-                '{ratings['Age_Rating'][0]}' * population_weightage_multiplier * avg_age_by_pa_normalized +
-                '{ratings['Income_Rating'][0]}' * median_hhi_by_pa_normalized +
-                '{ratings['MRT_Rating'][0]}' * dist_hdb_to_mrt_normalized +
-                '{ratings['Bus_Rating'][0]}' * dist_hdb_to_bus_normalized +
-                '{ratings['Park_Rating'][0]}' * dist_hdb_to_park_normalized +
-                '{ratings['Mall_Rating'][0]}' * dist_hdb_to_mall_normalized +
-                '{ratings['Prisch_Rating'][0]}' * dist_hdb_to_prisch_normalized) AS score
+                SELECT
+                town,
+                block,
+                street_name,
+                flat_type,
+                ROUND(floor_area_sqm,0) AS floor_area_sqm,
+                CONCAT("$",ROUND(price_per_sqm,2)) AS price_per_sqm,
+                CONCAT(ROUND((investment_rate-1)*100,2),"%") AS expected_return_in_5yr,
+                remaining_yrs_left_asof_2024 AS lease,
+                population_age,
+                median_hhi_by_pa,
+                mrt_name AS nearest_mrt,
+                bus_interchange AS nearest_bus_interchange,
+                park AS nearest_park,
+                mall AS nearest_mall,
+                pri_school AS nearest_primary_school,
+                lat,
+                lon,
+                ROUND((
+                SAFE_CAST('{ratings['Costsqm_Rating'][0]}' AS FLOAT64) * price_per_sqm_normalized +
+                SAFE_CAST('{ratings['Size_Rating'][0]}' AS FLOAT64) * floor_area_sqm_normalized +
+                SAFE_CAST('{ratings['Investment_Rating'][0]}' AS FLOAT64) * investment_weightage_multiplier * investment_rate +
+                SAFE_CAST('{ratings['Lease_Rating'][0]}' AS FLOAT64) * remaining_mths_lease_normalized +
+                SAFE_CAST('{ratings['Age_Rating'][0]}' AS FLOAT64) * population_weightage_multiplier * avg_age_by_pa_normalized +
+                SAFE_CAST('{ratings['Income_Rating'][0]}' AS FLOAT64) * median_hhi_by_pa_normalized +
+                SAFE_CAST('{ratings['MRT_Rating'][0]}' AS FLOAT64) * dist_hdb_to_mrt_normalized +
+                SAFE_CAST('{ratings['Bus_Rating'][0]}' AS FLOAT64) * dist_hdb_to_bus_normalized +
+                SAFE_CAST('{ratings['Park_Rating'][0]}' AS FLOAT64) * dist_hdb_to_park_normalized +
+                SAFE_CAST('{ratings['Mall_Rating'][0]}' AS FLOAT64) * dist_hdb_to_mall_normalized +
+                SAFE_CAST('{ratings['Prisch_Rating'][0]}' AS FLOAT64) * dist_hdb_to_prisch_normalized),2) AS score
                 FROM t2
-                LIMIT 1000
+                ORDER BY score DESC, price_per_sqm_normalized, floor_area_sqm_normalized DESC, investment_rate DESC, remaining_mths_lease_normalized DESC, dist_hdb_to_mrt_normalized, dist_hdb_to_bus_normalized, dist_hdb_to_park_normalized, dist_hdb_to_mall_normalized, dist_hdb_to_prisch_normalized
+                LIMIT 10
                          """)
 
-
+        hdb3 = hdb2[['town', 'block', 'street_name', 'flat_type', 'floor_area_sqm', 'price_per_sqm', 'expected_return_in_5yr', 'lease', 'population_age', 'median_hhi_by_pa', 'nearest_mrt','nearest_bus_interchange', 'nearest_park', 'nearest_mall', 'nearest_primary_school','score']]
+        
         # Output Table
-        st.write('Your top 10 most recommended HDB Flats')
+        st.subheader('Your top 10 most recommended HDB Flats')
         st.dataframe(hdb2)
 
         # Output Map
-        st.write('Location')
+        st.subheader('Map location')
         st.map(hdb2,
             latitude='lat',
             longitude='lon',)
+        
 
 fragment()
