@@ -402,7 +402,7 @@ def fragment():
         
         # Output Table
         st.subheader('Your top 10 most recommended HDB Flats')
-        st.dataframe(hdb2)
+        st.dataframe(hdb3)
 
         # Output Map
         st.subheader('Map location')
