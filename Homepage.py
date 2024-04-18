@@ -320,7 +320,7 @@ def fragment():
                 CASE WHEN t1.dist_hdb_to_bus <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_bus_multiplier,
                 CASE WHEN t1.dist_hdb_to_park <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_park_multiplier,
                 CASE WHEN t1.dist_hdb_to_mall <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_mall_multiplier,
-                CASE WHEN t1.dist_hdb_to_prisch <= 800 THEN 1 ELSE 0.5 END AS dist_hdb_to_prisch_multiplier,
+                CASE WHEN t1.dist_hdb_to_prisch <= 800 THEN 1 ELSE 0.3 END AS dist_hdb_to_prisch_multiplier,
                 FROM t1
                 )
                 SELECT
