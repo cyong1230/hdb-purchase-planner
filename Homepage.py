@@ -94,7 +94,7 @@ def fragment():
                             grant_indicator = 'Singles'
                             grant_amount = 20000
                     else:
-                        grant_indicator = 'Nil'
+                        grant_indicator = 'Nil_age35'
                 elif grant_single == 'Couple':
                     user_citizen = st.selectbox('What is your citizenship?', ('Singapore Citizen', 'PR', 'Foreigner'), 
                                 key = 'citizen1', index=None, placeholder="Please Select a Value")
@@ -140,6 +140,8 @@ def fragment():
             st.button("Next", on_click=click_button)
         elif grant_indicator == 'Nil':
             st.header(':neutral_face: You are not eligible to purchase a resale HDB')
+        elif grant_indicator == 'Nil_age35':
+            st.header(':neutral_face: You must be over 35 years old to purchase a resale HDB as a single')
 
 
     elif st.session_state.fragment_runs == 1:
