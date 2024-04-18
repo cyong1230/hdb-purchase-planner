@@ -51,7 +51,7 @@ def run_query(query):
 # st.write(hdb.shape[0])
 
 if "script_runs" not in st.session_state:
-    st.session_state.fragment_runs = 0
+    st.session_state.fragment_runs = 1
 
 ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 'Grant_Rooms': [],
             'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 
@@ -171,8 +171,8 @@ def fragment():
     elif st.session_state.fragment_runs == 1:
         st.write("#")
         # test values
-        # ratings['Price_Range'].append(int(1000000))
-        # ratings['Grant_Rooms'].append("4 ROOM")
+        ratings['Price_Range'].append(int(1000000))
+        ratings['Grant_Rooms'].append("4 ROOM")
 
         # hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
         if ratings['Grant_Rooms'][0] == '5 ROOM or larger':
@@ -186,21 +186,21 @@ def fragment():
 
         st.write("#")
 
-        # Cost per sqm (sort price_per_sqm_normalized from high to low)
+        # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from high to low)
         st.subheader('1. I prefer flats that are value for money.')
         costsqm_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='costsqm_rating')
         ratings['Costsqm_Rating'].append(costsqm_rating)
 
         st.write("#")
 
-        # Size (sort floor_area_sqm from high to low)
+        # Size (sort by score computed by rating*normalised, then sort final results using floor_area_sqm from high to low)
         st.subheader('2. I prefer flats that are huge.')
         size_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='size_rating')
         ratings['Size_Rating'].append(size_rating)
 
         st.write("#")
 
-        # Investment
+        # Investment (add weightage to the rating with selected investment percentage (10%, 20%, 30%) - multiplier_effect, sort by score computed by rating*normalised (times 2?), then sort final results using multiplier_effect from high to low)
         st.subheader('3. I view housing as an investment, and I expect high returns in the next 5 years, with at least ')
         c1, c2 = st.columns((1,3))
         with c1:
@@ -209,13 +209,22 @@ def fragment():
         with c2:
             st.write("#")
 
+        def prox_invest(x):
+            if x == '10% growth':
+                return 1.1
+            elif x == '20% growth':
+                return 1.2
+            else:
+                return 1.3
+            
         investment_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='investment_rating')
 
-        ratings['Investment_Range'].append(investment_range)
+        ratings['Investment_Range'].append(prox_invest(investment_range))
         ratings['Investment_Rating'].append(investment_rating)
         st.write("#")
 
-        # Floor
+        # Floor (add weightage to the rating with selected floors - storey_range_score (1 - low floor, 2 - mid floor, 3,4 - high floor),  sort by score computed by updated_weightage*normalised)
+        # Floor will affect the predicted price only (based on the average predicted price for respective floor storey)
         st.subheader('4. I prefer flats that are located on the ')
         c4, c5 = st.columns((1,3))
         with c4:
@@ -230,13 +239,13 @@ def fragment():
         ratings['Floor_Rating'].append(floor_rating)
         st.write("#")
         
-        # Lease
+        # Lease (sort by score computed by rating*normalised, then sort final results using remaining_mths_left_asof_2024 from high to low)
         st.subheader('5. I am looking for flats with a long lease.')
         lease_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='lease_rating')
         ratings['Lease_Rating'].append(lease_rating)
         st.write("#")
 
-        # Age
+        # Age (sort by score computed by rating*normalised, then sort final results using avg_age_by_pa from high to low)
         st.subheader('6. I prefer to live in an area with a ')
         c7, c8 = st.columns((1,3))
         with c7:
@@ -247,41 +256,41 @@ def fragment():
 
         age_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='age_rating')
 
-        ratings['Floor_Range'].append(age_range)
+        ratings['Age_Range'].append(age_range)
         ratings['Age_Rating'].append(age_rating)
         st.write("#")
 
-        # Income
+        # Income (sort by score computed by rating*normalised, then sort final results using median_hhi_by_pa from high to low)
         st.subheader('7. I prefer to live in an area with a high median household income.')
         income_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='income_rating')
         ratings['Income_Rating'].append(income_rating)
         st.write("#")
 
-        # MRT
+        # MRT (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mrt from low to high)
         st.subheader('8. I prefer to stay within 10 mins walking distance to the nearest MRT station.')
         mrt_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mrt_rating')
         ratings['MRT_Rating'].append(mrt_rating)
         st.write("#")
 
-        # Bus
+        # Bus (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_bus from low to high)
         st.subheader('9. I prefer to stay within 10 mins walking distance to the nearest bus interchange.')
         bus_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='bus_rating')
         ratings['Bus_Rating'].append(bus_rating)
         st.write("#")
 
-        # Park
+        # Park (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_park from low to high)
         st.subheader('10. I prefer to stay within 10 mins walking distance to the nearest park.')
         park_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='park_rating')
         ratings['Park_Rating'].append(park_rating)
         st.write("#")
 
-        # Mall
+        # Mall (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mall from low to high)
         st.subheader('11. I prefer to stay within 10 mins walking distance to the nearest shopping mall.')
         mall_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mall_rating')
         ratings['Mall_Rating'].append(mall_rating)
         st.write("#")
 
-        # Pri Sch
+        # Pri Sch (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_prisch from low to high)
         st.subheader('12. I prefer to stay within 10 mins walking distance to the nearest primary school.')
         prisch_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='prisch_rating')
         ratings['Prisch_Rating'].append(prisch_rating)
@@ -294,155 +303,90 @@ def fragment():
         st.title('Your personalized HDB Recommendation')
 
         ############################ Visualization ############################
-        # Prepping main table
-        # hdb['score'] = ((hdb['predicted_price_normalized']*ratings['Price_Rating'][0]) + (hdb['price_per_sqm_normalized']*ratings['Costsqm_Rating'][0]) + 
-        #                 (hdb['projected_5_years_normalized']*ratings['Investment_Rating'][0]) + (hdb['storey_range_normalized']*ratings['Floor_Rating'][0]) + 
-        #                 (hdb['remaining_mths_lease_normalized']*ratings['Lease_Rating'][0]) + (hdb['avg_age_by_pa_normalized']*ratings['Age_Rating'][0]) + 
-        #                 (hdb['median_hhi_by_pa_normalized']*ratings['Income_Rating'][0]) + (hdb['dist_hdb_to_park_normalized']*ratings['Park_Rating'][0]) + 
-        #                 (hdb['dist_hdb_to_mall_normalized']*ratings['Mall_Rating'][0]) + (hdb['dist_hdb_to_prisch_normalized']*ratings['Prisch_Rating'][0]) + 
-        #                 (hdb['dist_hdb_to_mrt_normalized']*ratings['MRT_Rating'][0]) + (hdb['dist_hdb_to_bus_normalized']*ratings['Bus_Rating'][0]) +
-        #                 (hdb['floor_area_sqm_normalized']*ratings['Floor_Rating'][0]))
 
-        # hdb = hdb[['town', 'flat_type', 'block', 'street_name', 'flat_model', 'resale_price', 'floor_area_sqm', 'price_per_sqm', 'storey_range', 'remaining_mths_left_asof_2024', 'avg_age_by_pa', 'median_hhi_by_pa', 'floor_area_sqm_normalized', 'dist_hdb_to_park', 'dist_hdb_to_mall', 'dist_hdb_to_prisch', 'dist_hdb_to_mrt', 'dist_hdb_to_bus', 'lat', 'lon', 'score']]
+        hdb2 = run_query(f"""
+            WITH t1 AS (
+                SELECT
+                full_addr
+                ,flat_type
+                ,MIN(town) AS town
+                ,MIN(block) AS block
+                ,MIN(street_name) AS street_name
+                ,MIN(floor_area_sqm) AS floor_area_sqm
+                ,MIN(postal) AS postal
+                ,MIN(lat) AS lat
+                ,MIN(lon) AS lon
+                ,MIN(remaining_mths_left_asof_2024) AS remaining_mths_left_asof_2024
+                ,MIN(pln_area_n) AS pln_area_n
+                ,MIN(subzone_n) AS subzone_n
+                ,MIN(mrt_name) AS mrt_name
+                ,MIN(dist_hdb_to_mrt) AS dist_hdb_to_mrt
+                ,MIN(bus_interchange) AS bus_interchange
+                ,MIN(dist_hdb_to_bus) AS dist_hdb_to_bus
+                ,MIN(pri_school) AS pri_school
+                ,MIN(dist_hdb_to_prisch) AS dist_hdb_to_prisch 
+                ,MIN(avg_age_by_pa) AS avg_age_by_pa
+                ,CASE
+                WHEN MIN(avg_age_by_pa) <= 38 THEN "Young population"
+                WHEN MIN(avg_age_by_pa) > 38 AND MIN(avg_age_by_pa) <= 43  THEN "Mid-Age population"
+                ELSE "Elderly population" END AS population_age
+                ,MIN(median_hhi_by_pa) AS median_hhi_by_pa
+                ,MIN(park) AS park
+                ,MIN(dist_hdb_to_park) AS dist_hdb_to_park
+                ,MIN(mall) AS mall
+                ,MIN(dist_hdb_to_mall) AS dist_hdb_to_mall
+                ,MIN(dist_hdb_to_park_normalized) AS dist_hdb_to_park_normalized
+                ,MIN(dist_hdb_to_mall_normalized) AS dist_hdb_to_mall_normalized
+                ,MIN(dist_hdb_to_prisch_normalized) AS dist_hdb_to_prisch_normalized
+                ,MIN(dist_hdb_to_mrt_normalized) AS dist_hdb_to_mrt_normalized
+                ,MIN(dist_hdb_to_bus_normalized) AS dist_hdb_to_bus_normalized
+                ,MIN(projected_5_years_normalized) AS projected_5_years_normalized
+                ,MIN(avg_age_by_pa_normalized) AS avg_age_by_pa_normalized
+                ,MIN(median_hhi_by_pa_normalized) AS median_hhi_by_pa_normalized
+                ,MIN(remaining_mths_lease_normalized) AS remaining_mths_lease_normalized
+                ,MIN(floor_area_sqm_normalized) AS floor_area_sqm_normalized
+                ,MIN(multiplier_effect) AS investment_rate
+                ,AVG(price_per_sqm_normalized) AS price_per_sqm_normalized
+                ,AVG(predicted_price) AS predicted_price
+                ,AVG(projected_5_years) AS projected_5_years
+                FROM `skillful-elf-416113.hdb.hdb_resale_final`
+                WHERE flat_type = '4 ROOM' and predicted_price <= 800000
+                GROUP BY
+                full_addr
+                ,flat_type
+                ),
+                t2 AS (
+                SELECT *,
+                CASE WHEN t1.investment_rate >= '{ratings['Investment_Range'][0]}' THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
+                CASE WHEN t1.population_age = '{ratings['Age_Range'][0]}' THEN 1 ELSE 0.8 END AS population_weightage_multiplier
+                FROM t1
+                )
+                SELECT *,
+                (
+                '{ratings['Costsqm_Rating'][0]}' * price_per_sqm_normalized +
+                '{ratings['Size_Rating'][0]}' * floor_area_sqm_normalized +
+                '{ratings['Investment_Rating'][0]}' * investment_weightage_multiplier * investment_rate +
+                '{ratings['Lease_Rating'][0]}' * remaining_mths_lease_normalized +
+                '{ratings['Age_Rating'][0]}' * population_weightage_multiplier * avg_age_by_pa_normalized +
+                '{ratings['Income_Rating'][0]}' * median_hhi_by_pa_normalized +
+                '{ratings['MRT_Rating'][0]}' * dist_hdb_to_mrt_normalized +
+                '{ratings['Bus_Rating'][0]}' * dist_hdb_to_bus_normalized +
+                '{ratings['Park_Rating'][0]}' * dist_hdb_to_park_normalized +
+                '{ratings['Mall_Rating'][0]}' * dist_hdb_to_mall_normalized +
+                '{ratings['Prisch_Rating'][0]}' * dist_hdb_to_prisch_normalized) AS score
+                FROM t2
+                LIMIT 1000
+                         """)
 
-        # def prox_price(x):
-        #     if x == '0 to 400 Thousand':
-        #         return 400000
-        #     elif x == '400 Thousand to 650 Thousand':
-        #         return 650000
-        #     else:
-        #         return 1000000000000
-            
-        # def prox_size(x):
-        #     if x == '0 to 70 sqm':
-        #         return 70
-        #     elif x == '70 sqm to 100 sqm':
-        #         return 100
-        #     else:
-        #         return 10000
 
-        # def prox_costsqm(x):
-        #     if x == '0 to 4500':
-        #         return 4500
-        #     elif x == '4500 to 6000':
-        #         return 6000
-        #     else:
-        #         return 10000000
-            
-        # def prox_floor(x):
-        #     if x == 'Low':
-        #         return 5
-        #     elif x == 'Mid':
-        #         return 11
-        #     else:
-        #         return 100
-            
-        # def prox_lease(x):
-        #     if x == '0 to 60 Years Left':
-        #         return 60
-        #     elif x == '60 to 80 Years Left':
-        #         return 80
-        #     else:
-        #         return 1000
-            
-        # def prox_age(x):
-        #     if x == 'Young':
-        #         return 38
-        #     elif x == 'Mid-Age':
-        #         return 43
-        #     else:
-        #         return 1000
-            
-        # def prox_income(x):
-        #     if x == '0 to 6500':
-        #         return 6500
-        #     elif x == '6500 to 8500':
-        #         return 8500
-        #     else:
-        #         return 10000000
+        # Output Table
+        st.write('Your top 10 most recommended HDB Flats')
+        st.dataframe(hdb2)
 
-        # def prox(x):
-        #     if x == 'Walking Distance':
-        #         return 500
-        #     elif x == 'A Station Over':
-        #         return 1000
-        #     else:
-        #         return 100000
-
-        # ratings['Price_Filter'].append(prox_price(ratings['Price_Range'][0]))
-        # ratings['Size_Filter'].append(prox_size(ratings['Size_Range'][0]))
-        # ratings['Costsqm_Filter'].append(prox_costsqm(ratings['Costsqm_Range'][0]))
-        # # ratings['Investment_Filter'].append(prox_investment(ratings['Investment_Range'][0]))
-        # # ratings['Floor_Filter'].append(prox_floor(ratings['Floor_Range'][0]))
-        # ratings['Lease_Filter'].append(prox_lease(ratings['Lease_Range'][0]))
-        # ratings['Age_Filter'].append(prox_age(ratings['Age_Range'][0]))
-        # ratings['Income_Filter'].append(prox_income(ratings['Income_Range'][0]))        
-        # ratings['Park_Proximity'].append(prox(ratings['Park_Range'][0]))
-        # ratings['Mall_Proximity'].append(prox(ratings['Mall_Range'][0]))
-        # ratings['Primary_School_Proximity'].append(prox(ratings['Prisch_Range'][0]))
-        # ratings['MRT_Proximity'].append(prox(ratings['MRT_Range'][0]))
-        # ratings['Bus_Proximity'].append(prox(ratings['Bus_Range'][0]))
-
-        
-
-        # # Filtering main table based on user input
-        # hdb2 = hdb[(hdb['resale_price'] <= ratings['Price_Filter'][0]) 
-        #         & (hdb['floor_area_sqm'] <= ratings['Size_Filter'][0]) 
-        #         & (hdb['price_per_sqm'] <= ratings['Costsqm_Filter'][0]) 
-        #         & (hdb['remaining_mths_left_asof_2024'] <= ratings['Lease_Filter'][0]) 
-        #         & (hdb['avg_age_by_pa'] <= ratings['Age_Filter'][0]) 
-        #         & (hdb['median_hhi_by_pa'] <= ratings['Income_Filter'][0]) 
-        #         & (hdb['dist_hdb_to_park'] <= ratings['Park_Proximity'][0]) 
-        #         & (hdb['dist_hdb_to_mall'] <= ratings['Mall_Proximity'][0]) 
-        #         & (hdb['dist_hdb_to_prisch'] <= ratings['Primary_School_Proximity'][0]) 
-        #         & (hdb['dist_hdb_to_mrt'] <= ratings['MRT_Proximity'][0]) 
-        #         & (hdb['dist_hdb_to_bus'] <= ratings['Bus_Proximity'][0])]
-
-        # # town_filter = st.multiselect('Select Town', options=list(hdb2['town'].unique()), default=list(hdb2['town'].unique()))
-        # # flat_type_filter = st.multiselect('Select Flat Type', options=list(hdb2['flat_type'].unique()), default=list(hdb2['flat_type'].unique()))
-
-        # # price_filter = st.slider("Select the HDB's Price", min_value = hdb2.resale_price.min(), max_value = hdb2.resale_price.max(), value = hdb2.resale_price.max())
-        # # size_filter = st.slider("Select the HDB's Size", min_value = hdb2.floor_area_sqm.min(), max_value = hdb2.floor_area_sqm.max(), value = hdb2.floor_area_sqm.max())
-        # # costsqm_filter = st.slider("Select the HDB's Cost Per Sqm", min_value = hdb2.price_per_sqm.min(), max_value = hdb2.price_per_sqm.max(), value = hdb2.price_per_sqm.max())
-        # # lease_filter = st.slider("Select the HDB's Remaining Lease", min_value = hdb2.remaining_mths_left_asof_2024.min(), max_value = hdb2.remaining_mths_left_asof_2024.max(), value = hdb2.remaining_mths_left_asof_2024.max())
-        # # age_filter = st.slider("Select the HDB's Population's Average Age", min_value = hdb2.avg_age_by_pa.min(), max_value = hdb2.avg_age_by_pa.max(), value = hdb2.avg_age_by_pa.max())
-        # # income_filter = st.slider("Select the HDB's Average Income Level", min_value = hdb2.median_hhi_by_pa.min(), max_value = hdb2.median_hhi_by_pa.max(), value = hdb2.median_hhi_by_pa.max())
-        
-        # # park_filter = st.slider("Select the HDB's proximity to a park", min_value = hdb2.dist_hdb_to_park.min(), max_value = hdb2.dist_hdb_to_park.max(), value = hdb2.dist_hdb_to_park.max())
-        # # mall_filter = st.slider("Select the HDB's proximity to a mall", min_value = hdb2.dist_hdb_to_mall.min(), max_value = hdb2.dist_hdb_to_mall.max(), value = hdb2.dist_hdb_to_mall.max())
-        # # prisch_filter = st.slider("Select the HDB's proximity to a Primary School", min_value = hdb2.dist_hdb_to_prisch.min(), max_value = hdb2.dist_hdb_to_prisch.max(), value = hdb2.dist_hdb_to_prisch.max())
-        # # mrt_filter = st.slider("Select the HDB's proximity to an MRT Station", min_value = hdb2.dist_hdb_to_mrt.min(), max_value = hdb2.dist_hdb_to_mrt.max(), value = hdb2.dist_hdb_to_mrt.max())
-        # # bus_filter = st.slider("Select the HDB's proximity to a Bus Station", min_value = hdb2.dist_hdb_to_bus.min(), max_value = hdb2.dist_hdb_to_bus.max(), value = hdb2.dist_hdb_to_bus.max())
-
-        # # Final Dataframe
-        # filtered_hdb = hdb2[hdb2['town'].isin(town_filter) 
-        #                     & hdb2['flat_type'].isin(flat_type_filter) 
-        #                     & (hdb2['resale_price'] <= price_filter) 
-        #                     & (hdb2['floor_area_sqm'] <= size_filter) 
-        #                     & (hdb2['price_per_sqm'] <= costsqm_filter) 
-        #                     & (hdb2['remaining_mths_left_asof_2024'] <= lease_filter) 
-        #                     & (hdb2['avg_age_by_pa'] <= age_filter) 
-        #                     & (hdb2['median_hhi_by_pa'] <= income_filter)
-        #                     & (hdb2['dist_hdb_to_park'] <= park_filter) 
-        #                     & (hdb2['dist_hdb_to_mall'] <= mall_filter) 
-        #                     & (hdb2['dist_hdb_to_prisch'] <= prisch_filter) 
-        #                     & (hdb2['dist_hdb_to_mrt'] <= mrt_filter) 
-        #                     & (hdb2['dist_hdb_to_bus'] <= bus_filter)]
-
-        # filtered_hdb = filtered_hdb.sort_values(by=['score'], ascending=False)
-        # filtered_hdb = filtered_hdb.reset_index(drop=True)
-        # filtered_hdb.index = filtered_hdb.index + 1
-
-        # # Output Table
-        # st.table(ratings)
-        
-        # st.write('Your top 10 most recommended HDB Flats')
-        # st.dataframe(filtered_hdb)
-
-        # # Output Map
-        # st.write('Location')
-        # st.map(filtered_hdb,
-        #     latitude='lat',
-        #     longitude='lon',)
+        # Output Map
+        st.write('Location')
+        st.map(hdb2,
+            latitude='lat',
+            longitude='lon',)
 
 fragment()
