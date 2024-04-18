@@ -32,6 +32,9 @@ if "script_runs" not in st.session_state:
 def click_button():
     st.session_state.fragment_runs += 1
 
+def click_button2():
+    st.session_state.fragment_runs -= 1
+
 @st.experimental_fragment
 def fragment():
     global costsqm_rating
@@ -40,6 +43,7 @@ def fragment():
     global costsqm_rating
     global size_rating
     global investment_range
+    global investment_range2
     global investment_rating
     global floor_range
     global floor_rating
@@ -184,7 +188,7 @@ def fragment():
                 return 0.3
         
         investment_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='investment_rating')
-        investment_range = prox_invest(investment_range)
+        investment_range2 = prox_invest(investment_range)
         st.write("#")
 
         # Floor (add weightage to the rating with selected floors - storey_range_score (1 - low floor, 2 - mid floor, 3,4 - high floor),  sort by score computed by updated_weightage*normalised)
@@ -250,8 +254,8 @@ def fragment():
         st.button("Generate My Personalized HDB Recommendation", on_click=click_button)
 
     else:
-
-        st.title('Your personalized HDB Recommendation')
+        st.write("#")
+        st.title('Your Personalized HDB Recommendation')
 
         ############################ Visualization ############################
 
@@ -310,8 +314,13 @@ def fragment():
                 ),
                 t2 AS (
                 SELECT *,
-                CASE WHEN t1.investment_rate >= SAFE_CAST('{investment_range}' AS FLOAT64) THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
-                CASE WHEN t1.population_age = '{age_range}' THEN 1 ELSE 0.8 END AS population_weightage_multiplier
+                CASE WHEN t1.investment_rate >= SAFE_CAST('{investment_range2}' AS FLOAT64) THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
+                CASE WHEN t1.population_age = '{age_range}' THEN 1 ELSE 0.98 END AS population_weightage_multiplier,
+                CASE WHEN t1.dist_hdb_to_mrt <= 800 THEN 1 ELSE 0.3 END AS dist_hdb_to_mrt_multiplier,
+                CASE WHEN t1.dist_hdb_to_bus <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_bus_multiplier,
+                CASE WHEN t1.dist_hdb_to_park <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_park_multiplier,
+                CASE WHEN t1.dist_hdb_to_mall <= 800 THEN 1 ELSE 0.2 END AS dist_hdb_to_mall_multiplier,
+                CASE WHEN t1.dist_hdb_to_prisch <= 800 THEN 1 ELSE 0.5 END AS dist_hdb_to_prisch_multiplier,
                 FROM t1
                 )
                 SELECT
@@ -320,39 +329,62 @@ def fragment():
                 street_name,
                 flat_type,
                 ROUND(floor_area_sqm,0) AS floor_area_sqm,
+                ROUND(predicted_price,2) AS predicted_price,
                 CONCAT("$",ROUND(price_per_sqm,2)) AS price_per_sqm,
                 CONCAT(ROUND((investment_rate)*100,2),"%") AS expected_return_in_5yr,
                 remaining_yrs_left_asof_2024 AS lease,
                 population_age,
                 median_hhi_by_pa,
                 mrt_name AS nearest_mrt,
+                ROUND(dist_hdb_to_mrt,2) AS dist_to_mrt_m,
                 bus_interchange AS nearest_bus_interchange,
+                ROUND(dist_hdb_to_bus,2) AS dist_to_bus_m,
                 park AS nearest_park,
+                ROUND(dist_hdb_to_park,2) AS dist_to_park_m,
                 mall AS nearest_mall,
+                ROUND(dist_hdb_to_mall,2) AS dist_to_mall_m,
                 pri_school AS nearest_primary_school,
+                ROUND(dist_hdb_to_prisch,2) AS dist_to_prisch_m,
                 lat,
                 lon,
                 ROUND((
-                SAFE_CAST('{costsqm_rating}' AS FLOAT64) * price_per_sqm_normalized +
+                SAFE_CAST('{costsqm_rating}' AS FLOAT64) * price_per_sqm_normalized * 0.8 +
                 SAFE_CAST('{size_rating}' AS FLOAT64) * floor_area_sqm_normalized +
                 SAFE_CAST('{investment_rating}' AS FLOAT64) * investment_weightage_multiplier * investment_rate +
                 SAFE_CAST('{lease_rating}' AS FLOAT64) * remaining_mths_lease_normalized +
                 SAFE_CAST('{age_rating}' AS FLOAT64) * population_weightage_multiplier * avg_age_by_pa_normalized +
                 SAFE_CAST('{income_rating}' AS FLOAT64) * median_hhi_by_pa_normalized +
-                SAFE_CAST('{mrt_rating}' AS FLOAT64) * dist_hdb_to_mrt_normalized +
-                SAFE_CAST('{bus_rating}' AS FLOAT64) * dist_hdb_to_bus_normalized +
-                SAFE_CAST('{park_rating}' AS FLOAT64) * dist_hdb_to_park_normalized +
-                SAFE_CAST('{mall_rating}' AS FLOAT64) * dist_hdb_to_mall_normalized +
-                SAFE_CAST('{prisch_rating}' AS FLOAT64) * dist_hdb_to_prisch_normalized),2) AS score
+                SAFE_CAST('{mrt_rating}' AS FLOAT64) * dist_hdb_to_mrt_multiplier * dist_hdb_to_mrt_normalized +
+                SAFE_CAST('{bus_rating}' AS FLOAT64) * dist_hdb_to_bus_multiplier * dist_hdb_to_bus_normalized +
+                SAFE_CAST('{park_rating}' AS FLOAT64) * dist_hdb_to_park_multiplier * dist_hdb_to_park_normalized +
+                SAFE_CAST('{mall_rating}' AS FLOAT64) * dist_hdb_to_mall_multiplier * dist_hdb_to_mall_normalized +
+                SAFE_CAST('{prisch_rating}' AS FLOAT64) * dist_hdb_to_prisch_multiplier * dist_hdb_to_prisch_normalized),2) AS score
                 FROM t2
                 ORDER BY score DESC, price_per_sqm_normalized, floor_area_sqm_normalized DESC, investment_rate DESC, remaining_mths_lease_normalized DESC, dist_hdb_to_mrt_normalized, dist_hdb_to_bus_normalized, dist_hdb_to_park_normalized, dist_hdb_to_mall_normalized, dist_hdb_to_prisch_normalized
                 LIMIT 10
                          """)
 
-        hdb3 = hdb2[['town', 'block', 'street_name', 'flat_type', 'floor_area_sqm', 'price_per_sqm', 'expected_return_in_5yr', 'lease', 'population_age', 'median_hhi_by_pa', 'nearest_mrt','nearest_bus_interchange', 'nearest_park', 'nearest_mall', 'nearest_primary_school','score']]
+        hdb3 = hdb2[['town', 'block', 'street_name', 'predicted_price', 'flat_type', 'floor_area_sqm', 'price_per_sqm', 'expected_return_in_5yr', 'lease', 'population_age', 'median_hhi_by_pa', 'nearest_mrt', 'dist_to_mrt_m',
+                     'nearest_bus_interchange', 'dist_to_bus_m', 'nearest_park', 'dist_to_park_m', 'nearest_mall', 'dist_to_mall_m', 'nearest_primary_school', 'dist_to_prisch_m', 'score']]
 
         # Output Table
-        st.subheader('Your top 10 most recommended HDB Flats')
+        st.subheader('Your top 10 most recommended HDB Flats to purchase')
+        st.info(f'''  
+        Based on your budget of ${budget} to purchase a {grant_rooms} HDB flat, and your preferences:
+        - I prefer flats that are value for money.     {costsqm_rating} / 10
+        - I prefer flats that are huge.     {size_rating} / 10
+        - I view housing as an investment, and I expect high returns in the next 5 years, with at least {investment_range2}     {investment_rating} / 10
+        - I prefer flats that are located on the {floor_range}     {floor_rating} / 10
+        - I am looking for flats with a long lease.     {lease_rating} / 10
+        - I prefer to live in an area with a {age_range}.     {age_rating} / 10
+        - I prefer to live in an area with a high median household income.     {income_rating} / 10
+        - I prefer to stay within 10 mins walking distance to the nearest MRT station.     {mrt_rating} / 10
+        - I prefer to stay within 10 mins walking distance to the nearest bus interchange.     {bus_rating} / 10
+        - I prefer to stay within 10 mins walking distance to the nearest park.     {park_rating} / 10
+        - I prefer to stay within 10 mins walking distance to the nearest shopping mall.     {mall_rating} / 10
+        - I prefer to stay within 10 mins walking distance to the nearest primary school.     {prisch_rating} / 10
+        ''' )
+        st.button("Try again with other preferences", on_click=click_button2)
         st.dataframe(hdb2)
 
         # Output Map
