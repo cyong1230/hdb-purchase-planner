@@ -211,11 +211,11 @@ def fragment():
 
         def prox_invest(x):
             if x == '10% growth':
-                return 1.1
+                return 0.1
             elif x == '20% growth':
-                return 1.2
+                return 0.2
             else:
-                return 1.3
+                return 0.3
             
         investment_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='investment_rating')
 
@@ -346,7 +346,7 @@ def fragment():
                 ,MIN(median_hhi_by_pa_normalized) AS median_hhi_by_pa_normalized
                 ,MIN(remaining_mths_lease_normalized) AS remaining_mths_lease_normalized
                 ,MIN(floor_area_sqm_normalized) AS floor_area_sqm_normalized
-                ,MIN(multiplier_effect) AS investment_rate
+                ,MIN(multiplier_effect-1) AS investment_rate
                 ,AVG(price_per_sqm) AS price_per_sqm
                 ,AVG(price_per_sqm_normalized) AS price_per_sqm_normalized
                 ,AVG(predicted_price) AS predicted_price
