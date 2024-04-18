@@ -26,55 +26,32 @@ def run_query(query):
     rows = [dict(row) for row in rows_raw]
     return pd.DataFrame(rows)
 
-
-#rows = run_query("SELECT COUNT(*) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-#hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-
-# Print results.
-# st.write("Total Count: ")
-# for row in rows:
-#     st.write(row['count_row'])
-
-# hdb = pd.DataFrame(df_dict)
-
-# Getting the floor level
-# hdb['first_level'] = hdb['storey_range'].str.extract(r'^(\d{2}).*$')
-# hdb['last_level'] = hdb['storey_range'].str.extract(r'^.*(\d{2})$')
-# hdb['first_level'] = hdb['first_level'].astype(int)
-# hdb['last_level'] = hdb['last_level'].astype(int)
-# hdb['level'] = (hdb['first_level'] + hdb['last_level'])/2
-
-#ram = hdb['multiplier_effect'].unique()
-# st.write(ram)
-
-# st.write(hdb.head(5))
-# st.write(hdb.shape[0])
-
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
-
-ratings = {'CPF': [], 'Cash': [], 'Grant_Indicator': [], 'Grant_Amount': [], 'Grant_Rooms': [],
-            'Price_Range': [], 'Size_Range': [], 'Costsqm_Range': [], 'Investment_Range': [], 
-            'Floor_Range': [], 'Lease_Range': [], 'Age_Range': [], 'Income_Range': [], 
-            'Park_Range': [], 'Mall_Range': [], 'Prisch_Range': [], 'MRT_Range': [], 
-            'Bus_Range': [], 
-            'Price_Rating': [], 'Size_Rating': [], 'Costsqm_Rating': [], 'Investment_Rating': [], 
-            'Floor_Rating': [], 'Lease_Rating': [], 'Age_Rating': [], 'Income_Rating': [], 
-            'Park_Rating': [], 'Mall_Rating': [], 'Prisch_Rating': [], 'MRT_Rating': [], 
-            'Bus_Rating': [],
-            'Price_Filter': [], 'Size_Filter': [], 'Costsqm_Filter': [], 'Investment_Filter': [],
-            'Floor_Filter': [], 'Lease_Filter': [], 'Age_Filter': [], 'Income_Filter': [],
-            'Park_Proximity': [], 'Mall_Proximity': [], 'Primary_School_Proximity': [], 
-            'MRT_Proximity': [], 'Bus_Proximity': []}
-
 
 def click_button():
     st.session_state.fragment_runs += 1
 
 @st.experimental_fragment
 def fragment():
-    global ratings
-    global hdb
+    global costsqm_rating
+    global grant_rooms
+    global budget
+    global costsqm_rating
+    global size_rating
+    global investment_range
+    global investment_rating
+    global floor_range
+    global floor_rating
+    global lease_rating
+    global age_range
+    global age_rating
+    global income_rating
+    global mrt_rating
+    global bus_rating
+    global park_rating
+    global mall_rating
+    global prisch_rating
 
     if st.session_state.fragment_runs == 0:
         ############################ User Input Form ############################
@@ -149,19 +126,12 @@ def fragment():
 
         if grant_indicator in ['Singles', 'Family']:
             loan = (cash+cpf)*4
-            budget = (cash+cpf)*5 + grant_amount
+            budget = int((cash+cpf)*5 + grant_amount)
             st.header('You are eligible to purchase a resale HDB with the following budget')
             st.write(':one: Eligible for a {0} grant of ${1}'.format(grant_indicator,grant_amount))
             st.write(':two: Eligible for a loan amount of ${0}'.format(int(loan)))
             st.write(':three: Total cash and cpf proceeds of ${0}'.format(int(cash+cpf)))
             st.subheader(':arrow_right: Your max HDB budget is ${0}'.format(int(budget)))
-
-            ratings['CPF'].append(cpf)
-            ratings['Cash'].append(cash)
-            ratings['Grant_Indicator'].append(grant_indicator)
-            ratings['Grant_Amount'].append(grant_amount)
-            ratings['Price_Range'].append(int(budget))
-            ratings['Grant_Rooms'].append(grant_rooms)
 
             st.button("Next", on_click=click_button)
         elif grant_indicator == 'Nil':
@@ -170,34 +140,30 @@ def fragment():
 
     elif st.session_state.fragment_runs == 1:
         st.write("#")
+
         # test values
-        # ratings['Price_Range'].append(int(1000000))
-        # ratings['Grant_Rooms'].append("4 ROOM")
+        # grant_rooms = "4 ROOM"
+        # budget = 1020000
 
-        # hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
-        if ratings['Grant_Rooms'][0] == '5 ROOM or larger':
-            hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type != '{ratings['Grant_Rooms'][0]}' and predicted_price <= SAFE_CAST('{ratings['Price_Range'][0]}' as INT64) LIMIT 100")
+        hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
+        if grant_rooms == '5 ROOM or larger':
+            hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type != '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' as INT64) LIMIT 100")
         else:
-            hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type = '{ratings['Grant_Rooms'][0]}' and predicted_price <= SAFE_CAST('{ratings['Price_Range'][0]}' as INT64) LIMIT 100")
+            hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type = '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' as INT64) LIMIT 100")
 
-        st.info(f"There are {hdb['count_row'][0]} of {ratings['Grant_Rooms'][0]} HDB flats that can meet your budget of ${ratings['Price_Range'][0]}.", icon="ℹ️")
+        st.info(f"There are {hdb['count_row'][0]} of {grant_rooms} HDB flats that can meet your budget of ${budget}.", icon="ℹ️")
         st.header('Find out your top 10 choices by indicating your preferences (1 star - Not Important, 10 stars - Very Important)')
-        # st.header('Please indicate your housing preferences and their importance to find out your top 10 choices (1 star - Not Important, 10 stars - Very Important)')
 
         st.write("#")
 
         # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from low to high)
         st.subheader('1. I prefer flats that are value for money.')
         costsqm_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='costsqm_rating')
-        ratings['Costsqm_Rating'].append(costsqm_rating)
-
         st.write("#")
 
         # Size (sort by score computed by rating*normalised, then sort final results using floor_area_sqm from high to low)
         st.subheader('2. I prefer flats that are huge.')
         size_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='size_rating')
-        ratings['Size_Rating'].append(size_rating)
-
         st.write("#")
 
         # Investment (add weightage to the rating with selected investment percentage (10%, 20%, 30%) - multiplier_effect, sort by score computed by rating*normalised (times 2?), then sort final results using multiplier_effect from high to low)
@@ -216,11 +182,9 @@ def fragment():
                 return 0.2
             else:
                 return 0.3
-            
+        
         investment_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='investment_rating')
-
-        ratings['Investment_Range'].append(prox_invest(investment_range))
-        ratings['Investment_Rating'].append(investment_rating)
+        investment_range = prox_invest(investment_range)
         st.write("#")
 
         # Floor (add weightage to the rating with selected floors - storey_range_score (1 - low floor, 2 - mid floor, 3,4 - high floor),  sort by score computed by updated_weightage*normalised)
@@ -234,15 +198,11 @@ def fragment():
             st.write("#")
 
         floor_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='floor_rating')
-
-        ratings['Floor_Range'].append(floor_range)
-        ratings['Floor_Rating'].append(floor_rating)
         st.write("#")
         
         # Lease (sort by score computed by rating*normalised, then sort final results using remaining_mths_left_asof_2024 from high to low)
         st.subheader('5. I am looking for flats with a long lease.')
         lease_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='lease_rating')
-        ratings['Lease_Rating'].append(lease_rating)
         st.write("#")
 
         # Age (sort by score computed by rating*normalised, then sort final results using avg_age_by_pa from high to low)
@@ -255,45 +215,36 @@ def fragment():
             st.write("#")
 
         age_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='age_rating')
-
-        ratings['Age_Range'].append(age_range)
-        ratings['Age_Rating'].append(age_rating)
         st.write("#")
 
         # Income (sort by score computed by rating*normalised, then sort final results using median_hhi_by_pa from high to low)
         st.subheader('7. I prefer to live in an area with a high median household income.')
         income_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='income_rating')
-        ratings['Income_Rating'].append(income_rating)
         st.write("#")
 
         # MRT (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mrt from low to high)
         st.subheader('8. I prefer to stay within 10 mins walking distance to the nearest MRT station.')
         mrt_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mrt_rating')
-        ratings['MRT_Rating'].append(mrt_rating)
         st.write("#")
 
         # Bus (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_bus from low to high)
         st.subheader('9. I prefer to stay within 10 mins walking distance to the nearest bus interchange.')
         bus_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='bus_rating')
-        ratings['Bus_Rating'].append(bus_rating)
         st.write("#")
 
         # Park (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_park from low to high)
         st.subheader('10. I prefer to stay within 10 mins walking distance to the nearest park.')
         park_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='park_rating')
-        ratings['Park_Rating'].append(park_rating)
         st.write("#")
 
         # Mall (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mall from low to high)
         st.subheader('11. I prefer to stay within 10 mins walking distance to the nearest shopping mall.')
         mall_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mall_rating')
-        ratings['Mall_Rating'].append(mall_rating)
         st.write("#")
 
         # Pri Sch (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_prisch from low to high)
         st.subheader('12. I prefer to stay within 10 mins walking distance to the nearest primary school.')
         prisch_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='prisch_rating')
-        ratings['Prisch_Rating'].append(prisch_rating)
         st.write("#")
 
         st.button("Generate My Personalized HDB Recommendation", on_click=click_button)
@@ -352,15 +303,15 @@ def fragment():
                 ,AVG(predicted_price) AS predicted_price
                 ,AVG(projected_5_years) AS projected_5_years
                 FROM `skillful-elf-416113.hdb.hdb_resale_final`
-                WHERE flat_type = '4 ROOM' and predicted_price <= 800000
+                WHERE flat_type = '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' AS FLOAT64)
                 GROUP BY
                 full_addr
                 ,flat_type
                 ),
                 t2 AS (
                 SELECT *,
-                CASE WHEN t1.investment_rate >= SAFE_CAST('{ratings['Investment_Range'][0]}' AS FLOAT64) THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
-                CASE WHEN t1.population_age = '{ratings['Age_Range'][0]}' THEN 1 ELSE 0.8 END AS population_weightage_multiplier
+                CASE WHEN t1.investment_rate >= SAFE_CAST('{investment_range}' AS FLOAT64) THEN 1 ELSE 0.8 END AS investment_weightage_multiplier,
+                CASE WHEN t1.population_age = '{age_range}' THEN 1 ELSE 0.8 END AS population_weightage_multiplier
                 FROM t1
                 )
                 SELECT
@@ -382,27 +333,27 @@ def fragment():
                 lat,
                 lon,
                 ROUND((
-                SAFE_CAST('{ratings['Costsqm_Rating'][0]}' AS FLOAT64) * price_per_sqm_normalized +
-                SAFE_CAST('{ratings['Size_Rating'][0]}' AS FLOAT64) * floor_area_sqm_normalized +
-                SAFE_CAST('{ratings['Investment_Rating'][0]}' AS FLOAT64) * investment_weightage_multiplier * investment_rate +
-                SAFE_CAST('{ratings['Lease_Rating'][0]}' AS FLOAT64) * remaining_mths_lease_normalized +
-                SAFE_CAST('{ratings['Age_Rating'][0]}' AS FLOAT64) * population_weightage_multiplier * avg_age_by_pa_normalized +
-                SAFE_CAST('{ratings['Income_Rating'][0]}' AS FLOAT64) * median_hhi_by_pa_normalized +
-                SAFE_CAST('{ratings['MRT_Rating'][0]}' AS FLOAT64) * dist_hdb_to_mrt_normalized +
-                SAFE_CAST('{ratings['Bus_Rating'][0]}' AS FLOAT64) * dist_hdb_to_bus_normalized +
-                SAFE_CAST('{ratings['Park_Rating'][0]}' AS FLOAT64) * dist_hdb_to_park_normalized +
-                SAFE_CAST('{ratings['Mall_Rating'][0]}' AS FLOAT64) * dist_hdb_to_mall_normalized +
-                SAFE_CAST('{ratings['Prisch_Rating'][0]}' AS FLOAT64) * dist_hdb_to_prisch_normalized),2) AS score
+                SAFE_CAST('{costsqm_rating}' AS FLOAT64) * price_per_sqm_normalized +
+                SAFE_CAST('{size_rating}' AS FLOAT64) * floor_area_sqm_normalized +
+                SAFE_CAST('{investment_rating}' AS FLOAT64) * investment_weightage_multiplier * investment_rate +
+                SAFE_CAST('{lease_rating}' AS FLOAT64) * remaining_mths_lease_normalized +
+                SAFE_CAST('{age_rating}' AS FLOAT64) * population_weightage_multiplier * avg_age_by_pa_normalized +
+                SAFE_CAST('{income_rating}' AS FLOAT64) * median_hhi_by_pa_normalized +
+                SAFE_CAST('{mrt_rating}' AS FLOAT64) * dist_hdb_to_mrt_normalized +
+                SAFE_CAST('{bus_rating}' AS FLOAT64) * dist_hdb_to_bus_normalized +
+                SAFE_CAST('{park_rating}' AS FLOAT64) * dist_hdb_to_park_normalized +
+                SAFE_CAST('{mall_rating}' AS FLOAT64) * dist_hdb_to_mall_normalized +
+                SAFE_CAST('{prisch_rating}' AS FLOAT64) * dist_hdb_to_prisch_normalized),2) AS score
                 FROM t2
                 ORDER BY score DESC, price_per_sqm_normalized, floor_area_sqm_normalized DESC, investment_rate DESC, remaining_mths_lease_normalized DESC, dist_hdb_to_mrt_normalized, dist_hdb_to_bus_normalized, dist_hdb_to_park_normalized, dist_hdb_to_mall_normalized, dist_hdb_to_prisch_normalized
                 LIMIT 10
                          """)
 
         hdb3 = hdb2[['town', 'block', 'street_name', 'flat_type', 'floor_area_sqm', 'price_per_sqm', 'expected_return_in_5yr', 'lease', 'population_age', 'median_hhi_by_pa', 'nearest_mrt','nearest_bus_interchange', 'nearest_park', 'nearest_mall', 'nearest_primary_school','score']]
-        
+
         # Output Table
         st.subheader('Your top 10 most recommended HDB Flats')
-        st.dataframe(hdb3)
+        st.dataframe(hdb2)
 
         # Output Map
         st.subheader('Map location')
