@@ -335,7 +335,7 @@ def fragment():
                 street_name,
                 flat_type,
                 ROUND(floor_area_sqm,0) AS floor_area_sqm,
-                ROUND(predicted_price,2) AS predicted_price,
+                CONCAT("$",ROUND(predicted_price,2)) AS predicted_price,
                 CONCAT("$",ROUND(price_per_sqm,2)) AS price_per_sqm,
                 CONCAT(ROUND((investment_rate)*100,2),"%") AS expected_return_in_5yr,
                 remaining_yrs_left_asof_2024 AS lease,
