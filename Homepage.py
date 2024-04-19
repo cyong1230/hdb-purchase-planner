@@ -3,12 +3,21 @@ import pandas as pd
 from google.oauth2 import service_account
 from google.cloud import bigquery
 from streamlit_star_rating import st_star_rating
+import time
 
 st.set_page_config(
     page_title = 'Singapore Property Purchase Planner',
     page_icon = '?',
     layout = 'wide',
     )
+
+js = '''
+<script>
+    var body = window.parent.document.querySelector(".main");
+    console.log(body);
+    body.scrollTop = 0;
+</script>
+'''
 
 # Create API client.
 credentials = service_account.Credentials.from_service_account_info(
@@ -31,9 +40,19 @@ if "script_runs" not in st.session_state:
 
 def click_button():
     st.session_state.fragment_runs += 1
+    temp = st.empty()
+    with temp:
+        st.components.v1.html(js)
+        time.sleep(.5) # To make sure the script can execute before being deleted
+    temp.empty()
 
 def click_button2():
     st.session_state.fragment_runs -= 1
+    temp = st.empty()
+    with temp:
+        st.components.v1.html(js)
+        time.sleep(.5) # To make sure the script can execute before being deleted
+    temp.empty()
 
 @st.experimental_fragment
 def fragment():
@@ -373,7 +392,7 @@ def fragment():
                      'nearest_bus_interchange', 'dist_to_bus_m', 'nearest_park', 'dist_to_park_m', 'nearest_mall', 'dist_to_mall_m', 'nearest_primary_school', 'dist_to_prisch_m', 'score']]
 
         # Output Table
-        st.subheader('Your top 10 most recommended HDB Flats to purchase')
+        st.write('Your top 10 most recommended HDB Flats to purchase')
         st.info(f'''  
         Based on your budget of ${budget2} to purchase a {grant_rooms} HDB flat, and your preferences:
         - I prefer flats that are value for money.     {costsqm_rating} / 10
@@ -393,7 +412,7 @@ def fragment():
         st.dataframe(hdb2)
 
         # Output Map
-        st.subheader('Map location')
+        st.write('Map location')
         st.map(hdb2,
             latitude='lat',
             longitude='lon',)
