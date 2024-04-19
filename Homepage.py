@@ -161,7 +161,6 @@ def fragment():
         st.info(f"There are {hdb['count_row'][0]} of {grant_rooms} HDB flats that can meet your max budget of ${budget}.", icon="ℹ️")
         st.header('Find out your top 10 choices by indicating your preferences (1 star - Not Important, 10 stars - Very Important)')
 
-        st.write("#")
         # Budget
         budget2 = st.slider('Your Preferred Budget ($): ', 0, budget, budget)
         budget2 = int(budget2)
