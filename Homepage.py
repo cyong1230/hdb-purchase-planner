@@ -40,6 +40,7 @@ def fragment():
     global costsqm_rating
     global grant_rooms
     global budget
+    global budget2
     global costsqm_rating
     global size_rating
     global investment_range
