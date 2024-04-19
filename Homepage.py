@@ -146,7 +146,7 @@ def fragment():
 
 
     elif st.session_state.fragment_runs == 1:
-        st.write("#")
+        st.write("##")
 
         # test values
         # grant_rooms = "4 ROOM"
@@ -260,7 +260,7 @@ def fragment():
         st.button("Generate My Personalized HDB Recommendation", on_click=click_button)
 
     else:
-        st.write("#")
+        st.write("##")
         st.title('Your Personalized HDB Recommendation')
 
         ############################ Visualization ############################
