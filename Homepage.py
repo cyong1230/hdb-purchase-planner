@@ -157,10 +157,12 @@ def fragment():
         else:
             hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type = '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' as INT64) LIMIT 100")
 
-        st.info(f"There are {hdb['count_row'][0]} of {grant_rooms} HDB flats that can meet your budget of ${budget}.", icon="ℹ️")
+        st.info(f"There are {hdb['count_row'][0]} of {grant_rooms} HDB flats that can meet your max budget of ${budget}.", icon="ℹ️")
         st.header('Find out your top 10 choices by indicating your preferences (1 star - Not Important, 10 stars - Very Important)')
 
         st.write("#")
+        # Budget
+        budget2 = st.slider('Preferred budget: ', 0, budget, budget)
 
         # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from low to high)
         st.subheader('1. I prefer flats that are value for money.')
@@ -309,7 +311,7 @@ def fragment():
                 ,AVG(predicted_price) AS predicted_price
                 ,AVG(projected_5_years) AS projected_5_years
                 FROM `skillful-elf-416113.hdb.hdb_resale_final`
-                WHERE flat_type = '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' AS FLOAT64)
+                WHERE flat_type = '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget2}' AS FLOAT64)
                 GROUP BY
                 full_addr
                 ,flat_type
@@ -372,7 +374,7 @@ def fragment():
         # Output Table
         st.subheader('Your top 10 most recommended HDB Flats to purchase')
         st.info(f'''  
-        Based on your budget of ${budget} to purchase a {grant_rooms} HDB flat, and your preferences:
+        Based on your budget of ${budget2} to purchase a {grant_rooms} HDB flat, and your preferences:
         - I prefer flats that are value for money.     {costsqm_rating} / 10
         - I prefer flats that are huge.     {size_rating} / 10
         - I view housing as an investment, and I expect high returns in the next 5 years, with at least {investment_range2}     {investment_rating} / 10
