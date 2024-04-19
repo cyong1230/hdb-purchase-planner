@@ -162,7 +162,8 @@ def fragment():
 
         st.write("#")
         # Budget
-        budget2 = st.slider('Preferred budget: ', 0, budget, budget)
+        budget2 = st.slider('Your Preferred Budget ($): ', 0, budget, budget)
+        budget2 = int(budget2)
 
         # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from low to high)
         st.subheader('1. I prefer flats that are value for money.')
