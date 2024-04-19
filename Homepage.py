@@ -5,12 +5,14 @@ from google.cloud import bigquery
 from streamlit_star_rating import st_star_rating
 import time
 
+# Set page configuration
 st.set_page_config(
     page_title = 'Singapore Property Purchase Planner',
     page_icon = '?',
     layout = 'wide',
     )
 
+# JavaScript code to scroll to the top of the page
 js = '''
 <script>
     var body = window.parent.document.querySelector(".main");
@@ -19,13 +21,13 @@ js = '''
 </script>
 '''
 
-# Create API client.
+# Create API client using service account credentials
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
 )
 client = bigquery.Client(credentials=credentials)
 
-# Perform query.
+# Function to run BigQuery query
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
 def run_query(query):
@@ -38,6 +40,7 @@ def run_query(query):
 if "script_runs" not in st.session_state:
     st.session_state.fragment_runs = 0
 
+# Function to handle button click events (go forward)
 def click_button():
     st.session_state.fragment_runs += 1
     temp = st.empty()
@@ -46,6 +49,7 @@ def click_button():
         time.sleep(.5) # To make sure the script can execute before being deleted
     temp.empty()
 
+# Function to handle button click events (go back)
 def click_button2():
     st.session_state.fragment_runs -= 1
     temp = st.empty()
@@ -54,8 +58,10 @@ def click_button2():
         time.sleep(.5) # To make sure the script can execute before being deleted
     temp.empty()
 
+############################ Main App ##############################
 @st.experimental_fragment
 def fragment():
+     # Define variables to store user inputs
     global costsqm_rating
     global grant_rooms
     global budget
@@ -76,21 +82,16 @@ def fragment():
     global park_rating
     global mall_rating
     global prisch_rating
-
+    
+    ### Fragment 1: HDB Budget Calculator (Dynamic User Input Form)
     if st.session_state.fragment_runs == 0:
-        ############################ User Input Form ############################
-        st.title('Singapore Property Purchase Planner')
 
-        # HDB Budget Calculator
+        st.title('Singapore Property Purchase Planner')
         st.header('Please answer these questions to calculate your budget')
 
         grant_indicator = ''
-
-
         user_age = st.number_input('Age', min_value = 0, value = None)
-
         cpf = st.number_input('CPF Savings', min_value = 0.00, value = None)
-
         cash = st.number_input('Cash Savings', min_value = 0.00, value = None)
 
         grant_rooms = st.selectbox('What type of HDB do you intend to buy?', ('2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM or larger'), 
@@ -99,6 +100,7 @@ def fragment():
         grant_citizen = st.selectbox('Are you a Singapore Citizen or applying with a Singapore Citizen?', ('Yes', 'No'), 
                                 key = 'citizen', index=None, placeholder="Please Select a Value")
 
+        # nested logics to calculate the user's eligibility to buy, and if eligible, the amount of grants and their maximum budget based on their inputs
         if grant_citizen == 'Yes':
             grant_first = st.selectbox('Are you a first-time applicant or applying with a first-time applicant?', ('Yes', 'No'), 
                                 key = 'first', index=None, placeholder="Please Select a Value")
@@ -164,13 +166,11 @@ def fragment():
             st.header(':neutral_face: You must be over 35 years old to purchase a resale HDB as a single')
 
 
+   ### Fragment 2: User Perferences for HDB flats (Answering 12 intuitive questions)
     elif st.session_state.fragment_runs == 1:
         st.write("##")
 
-        # test values
-        # grant_rooms = "4 ROOM"
-        # budget = 1020000
-
+        # Run query to give users' a sense of how many potential choices based on their max budget and flat type
         hdb = run_query("SELECT * FROM `skillful-elf-416113.hdb.hdb_resale_final` LIMIT 1000")
         if grant_rooms == '5 ROOM or larger':
             hdb = run_query(f"SELECT COUNT(DISTINCT full_addr) as count_row FROM `skillful-elf-416113.hdb.hdb_resale_final` WHERE flat_type != '{grant_rooms}' and predicted_price <= SAFE_CAST('{budget}' as INT64) LIMIT 100")
@@ -180,21 +180,21 @@ def fragment():
         st.info(f"There are {hdb['count_row'][0]} of {grant_rooms} HDB flats that can meet your max budget of ${budget}.", icon="ℹ️")
         st.header('Find out your top 10 choices by indicating your preferences (1 star - Not Important, 10 stars - Very Important)')
 
-        # Budget
+        # Budget filer (instead of max out the budget)
         budget2 = st.slider('Your Preferred Budget ($): ', 0, budget, budget)
         budget2 = int(budget2)
 
-        # Cost per sqm (sort by score computed by rating*normalised, then sort final results using price_per_sqm_normalized from low to high)
+        # 1. I prefer flats that are value for money. (Key metrics: Cost per sqm)
         st.subheader('1. I prefer flats that are value for money.')
         costsqm_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='costsqm_rating')
         st.write("#")
 
-        # Size (sort by score computed by rating*normalised, then sort final results using floor_area_sqm from high to low)
+        # 2. I prefer flats that are huge. (Key metrics: Size / floor area in sqm)
         st.subheader('2. I prefer flats that are huge.')
         size_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='size_rating')
         st.write("#")
 
-        # Investment (add weightage to the rating with selected investment percentage (10%, 20%, 30%) - multiplier_effect, sort by score computed by rating*normalised (times 2?), then sort final results using multiplier_effect from high to low)
+        # 3. I view housing as an investment, and I expect high returns in the next 5 years, with at least X% growth (Key metrics: Investment return)
         st.subheader('3. I view housing as an investment, and I expect high returns in the next 5 years, with at least ')
         c1, c2 = st.columns((1,3))
         with c1:
@@ -203,6 +203,7 @@ def fragment():
         with c2:
             st.write("#")
 
+        # function to convert text to float value
         def prox_invest(x):
             if x == '10% growth':
                 return 0.1
@@ -215,8 +216,7 @@ def fragment():
         investment_range2 = prox_invest(investment_range)
         st.write("#")
 
-        # Floor (add weightage to the rating with selected floors - storey_range_score (1 - low floor, 2 - mid floor, 3,4 - high floor),  sort by score computed by updated_weightage*normalised)
-        # Floor will affect the predicted price only (based on the average predicted price for respective floor storey)
+        # 4. I prefer flats that are located on the X floor (Key metrics: Storey range)
         st.subheader('4. I prefer flats that are located on the ')
         c4, c5 = st.columns((1,3))
         with c4:
@@ -228,12 +228,12 @@ def fragment():
         floor_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='floor_rating')
         st.write("#")
         
-        # Lease (sort by score computed by rating*normalised, then sort final results using remaining_mths_left_asof_2024 from high to low)
+        # 5. I am looking for flats with a long lease. (Key metrics: Lease / remaining_mths_left_asof_2024)
         st.subheader('5. I am looking for flats with a long lease.')
         lease_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='lease_rating')
         st.write("#")
 
-        # Age (sort by score computed by rating*normalised, then sort final results using avg_age_by_pa from high to low)
+        # 6. I prefer to live in an area with a X population. (Key metrics: avg_age_by_pa)
         st.subheader('6. I prefer to live in an area with a ')
         c7, c8 = st.columns((1,3))
         with c7:
@@ -245,44 +245,46 @@ def fragment():
         age_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='age_rating')
         st.write("#")
 
-        # Income (sort by score computed by rating*normalised, then sort final results using median_hhi_by_pa from high to low)
+        # 7. I prefer to live in an area with a high median household income. (Key mtrics: median_hhi_by_pa)
+        Income (sort by score computed by rating*normalised, then sort final results using median_hhi_by_pa from high to low)
         st.subheader('7. I prefer to live in an area with a high median household income.')
         income_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='income_rating')
         st.write("#")
 
-        # MRT (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mrt from low to high)
+        # 8. I prefer to stay within 10 mins walking distance to the nearest MRT station. (Key metrics: dist_hdb_to_mrt)
         st.subheader('8. I prefer to stay within 10 mins walking distance to the nearest MRT station.')
         mrt_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mrt_rating')
         st.write("#")
 
-        # Bus (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_bus from low to high)
+        # 9. I prefer to stay within 10 mins walking distance to the nearest bus interchange. (Key metrics: dist_hdb_to_bus)
         st.subheader('9. I prefer to stay within 10 mins walking distance to the nearest bus interchange.')
         bus_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='bus_rating')
         st.write("#")
 
-        # Park (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_park from low to high)
+        # 10. I prefer to stay within 10 mins walking distance to the nearest park. (Key metrics: dist_hdb_to_park)
         st.subheader('10. I prefer to stay within 10 mins walking distance to the nearest park.')
         park_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='park_rating')
         st.write("#")
 
-        # Mall (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_mall from low to high)
+        # 11. I prefer to stay within 10 mins walking distance to the nearest shopping mall. (Key metrics: dist_hdb_to_mall)
         st.subheader('11. I prefer to stay within 10 mins walking distance to the nearest shopping mall.')
         mall_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='mall_rating')
         st.write("#")
 
-        # Pri Sch (sort by score computed by rating*normalised, then sort final results using dist_hdb_to_prisch from low to high)
+        # 12. I prefer to stay within 10 mins walking distance to the nearest primary school. (Key metrics: dist_hdb_to_prisch)
         st.subheader('12. I prefer to stay within 10 mins walking distance to the nearest primary school.')
         prisch_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='prisch_rating')
         st.write("#")
 
+        # Button to go to the next segment
         st.button("Generate My Personalized HDB Recommendation", on_click=click_button)
 
+    ### Fragment 3: Displays the top 10 recommended HDB flats in a table and on a map
     else:
         st.write("##")
         st.title('Your Personalized HDB Recommendation')
 
-        ############################ Visualization ############################
-
+        # run query to get the top 10 recommended HDB flats (top 10 score computed based on the weightage from the user inputs and adjusted normalised values of the key metrics due to diff data distributions)
         hdb2 = run_query(f"""
             WITH t1 AS (
                 SELECT
@@ -391,7 +393,7 @@ def fragment():
         hdb3 = hdb2[['town', 'block', 'street_name', 'predicted_price', 'flat_type', 'floor_area_sqm', 'price_per_sqm', 'expected_return_in_5yr', 'lease', 'population_age', 'median_hhi_by_pa', 'nearest_mrt', 'dist_to_mrt_m',
                      'nearest_bus_interchange', 'dist_to_bus_m', 'nearest_park', 'dist_to_park_m', 'nearest_mall', 'dist_to_mall_m', 'nearest_primary_school', 'dist_to_prisch_m', 'score']]
 
-        # Output Table
+        # Summary of the user inputs
         st.write('Your top 10 most recommended HDB Flats to purchase')
         st.info(f'''  
         Based on your budget of ${budget2} to purchase a {grant_rooms} HDB flat, and your preferences:
@@ -408,7 +410,11 @@ def fragment():
         - I prefer to stay within 10 mins walking distance to the nearest shopping mall.     {mall_rating} / 10
         - I prefer to stay within 10 mins walking distance to the nearest primary school.     {prisch_rating} / 10
         ''' )
+
+        # Button to go to the previous segment
         st.button("Try again with other preferences", on_click=click_button2)
+
+        # Output Table
         st.dataframe(hdb2)
 
         # Output Map
