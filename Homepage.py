@@ -336,7 +336,7 @@ def fragment():
                 CONCAT(ROUND((investment_rate)*100,2),"%") AS expected_return_in_5yr,
                 remaining_yrs_left_asof_2024 AS lease,
                 population_age,
-                median_hhi_by_pa,
+                CONCAT("$",median_hhi_by_pa) AS median_hhi_by_pa,
                 mrt_name AS nearest_mrt,
                 ROUND(dist_hdb_to_mrt,2) AS dist_to_mrt_m,
                 bus_interchange AS nearest_bus_interchange,
