@@ -2,4 +2,3 @@ streamlit
 google-cloud-bigquery
 pandas
 st-star-rating
-time
