@@ -398,8 +398,8 @@ def fragment():
         Based on your budget of ${budget2} to purchase a {grant_rooms} HDB flat, and your preferences:
         - I prefer flats that are value for money.     {costsqm_rating} / 10
         - I prefer flats that are huge.     {size_rating} / 10
-        - I view housing as an investment, and I expect high returns in the next 5 years, with at least {investment_range2}     {investment_rating} / 10
-        - I prefer flats that are located on the {floor_range}     {floor_rating} / 10
+        - I view housing as an investment, and I expect high returns in the next 5 years, with at least {investment_range}.        {investment_rating} / 10
+        - I prefer flats that are located on the {floor_range}.        {floor_rating} / 10
         - I am looking for flats with a long lease.     {lease_rating} / 10
         - I prefer to live in an area with a {age_range}.     {age_rating} / 10
         - I prefer to live in an area with a high median household income.     {income_rating} / 10
