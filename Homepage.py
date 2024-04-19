@@ -246,7 +246,6 @@ def fragment():
         st.write("#")
 
         # 7. I prefer to live in an area with a high median household income. (Key mtrics: median_hhi_by_pa)
-        Income (sort by score computed by rating*normalised, then sort final results using median_hhi_by_pa from high to low)
         st.subheader('7. I prefer to live in an area with a high median household income.')
         income_rating = st_star_rating(label='',maxValue=10, defaultValue=5, size=20, key='income_rating')
         st.write("#")
